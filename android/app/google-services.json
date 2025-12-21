@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "146036295592",
+    "project_id": "electronics-store-273ce",
+    "storage_bucket": "electronics-store-273ce.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:146036295592:android:b239ddebeafd158cedbf9d",
+        "android_client_info": {
+          "package_name": "com.electronicsstore.electronics_store"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCjMz5DUluL0YhSXKN5mqgUvcJ8OOwssXM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
