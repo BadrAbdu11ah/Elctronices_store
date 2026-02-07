@@ -80,7 +80,7 @@ lib/
 
 ## 📸 Screenshots
 
-> سيتم إضافة صور للتطبيق لاحقًا
+>![Home Screen](assets/images/badr.png)
 
 ---
 
