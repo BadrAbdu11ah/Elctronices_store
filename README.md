@@ -11,7 +11,7 @@
 - دعم كامل للـ RTL و LTR
 ## 🎥 App Demo Video
 ▶️ Watch the full app demo here:  
-[![App Demo](assets/screenshots/home.jpg)]([PUT_VIDEO_LINK_HERE](https://youtube.com/shorts/fwH_YK5l2TU))
+[Click to watch the demo video](https://youtube.com/shorts/fwH_YK5l2TU)
 
 ### 🛒 User Side
 - تسجيل الدخول / إنشاء حساب
