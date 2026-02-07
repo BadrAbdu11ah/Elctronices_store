@@ -74,32 +74,7 @@ lib/
 ## 📸 Screenshots
 > ضع الصور في مجلد `assets/screenshots/` داخل المشروع.
 
-### Home Screen
-![Home Screen](assets/screenshots/home.jpg)
 
-### Search Screen
-![Search Screen](assets/screenshots/search.jpg)
-
-### Product Details
-![Product Details](assets/screenshots/product_details.jpg)
-
-### Favorites
-![Favorites](assets/screenshots/favorites.jpg)
-
-### Cart
-![Cart](assets/screenshots/cart.jpg)
-
-### Checkout
-![Checkout](assets/screenshots/checkout.jpg)
-
-### Orders
-![Orders](assets/screenshots/orders.jpg)
-
-### Order Details
-![Order Details](assets/screenshots/order_details.jpg)
-
-### Login / Register
-![Login](assets/screenshots/login.jpg)
 
 ---
 
