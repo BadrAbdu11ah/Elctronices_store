@@ -71,13 +71,13 @@ lib/
 
 ---
 
-### 📸 (App Screenshots)
+### 📱 واجهات التطبيق (App Screenshots)
 
 <table>
   <tr>
-    <td><b>الرئيسية</b></td>
-    <td><b>البحث</b></td>
-    <td><b>تفاصيل المنتج</b></td>
+    <td align="center"><b>الرئيسية</b></td>
+    <td align="center"><b>البحث</b></td>
+    <td align="center"><b>تفاصيل المنتج</b></td>
   </tr>
   <tr>
     <td><img src="assets/screenshots/home.jpg" width="250"></td>
@@ -85,17 +85,26 @@ lib/
     <td><img src="assets/screenshots/product_details.jpg" width="250"></td>
   </tr>
   <tr>
-    <td><b>المفضلة</b></td>
-    <td><b>السلة</b></td>
-    <td><b>الدفع</b></td>
+    <td align="center"><b>المفضلة</b></td>
+    <td align="center"><b>السلة</b></td>
+    <td align="center"><b>إتمام الطلب (Checkout)</b></td>
   </tr>
   <tr>
     <td><img src="assets/screenshots/favorites.jpg" width="250"></td>
     <td><img src="assets/screenshots/cart.jpg" width="250"></td>
     <td><img src="assets/screenshots/checkout.jpg" width="250"></td>
   </tr>
+  <tr>
+    <td align="center"><b>طلباتي</b></td>
+    <td align="center"><b>تفاصيل الطلب</b></td>
+    <td align="center"><b>تسجيل الدخول</b></td>
+  </tr>
+  <tr>
+    <td><img src="assets/screenshots/orders.jpg" width="250"></td>
+    <td><img src="assets/screenshots/order_details.jpg" width="250"></td>
+    <td><img src="assets/screenshots/login.jpg" width="250"></td>
+  </tr>
 </table>
-
 
 ---
 
