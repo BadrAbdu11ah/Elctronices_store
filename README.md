@@ -5,6 +5,13 @@
 ---
 
 ## 🚀 Features
+## 🌍 تعدد اللغات
+- التطبيق يدعم اللغتين العربية والإنجليزية
+- التبديل بين اللغات يتم من داخل التطبيق
+- دعم كامل للـ RTL و LTR
+## 🎥 App Demo Video
+▶️ Watch the full app demo here:  
+[![App Demo](assets/screenshots/home.jpg)]([PUT_VIDEO_LINK_HERE](https://youtube.com/shorts/fwH_YK5l2TU))
 
 ### 🛒 User Side
 - تسجيل الدخول / إنشاء حساب
@@ -105,6 +112,7 @@ lib/
     <td><img src="assets/screenshots/login.jpg" width="250"></td>
   </tr>
 </table>
+
 
 ---
 
