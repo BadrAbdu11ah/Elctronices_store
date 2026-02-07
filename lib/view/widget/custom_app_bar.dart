@@ -6,6 +6,7 @@ class CustomAppBar extends StatelessWidget {
   final TextEditingController product;
   final void Function() onOrder;
   final void Function()? onFavorite;
+  final bool isFavorite;
   final void Function(String) onChanged;
   const CustomAppBar({
     super.key,
@@ -14,6 +15,7 @@ class CustomAppBar extends StatelessWidget {
     required this.onSearch,
     required this.title,
     this.onFavorite,
+    this.isFavorite = true,
     required this.onChanged,
   });
 
@@ -57,18 +59,19 @@ class CustomAppBar extends StatelessWidget {
             ),
           ),
           SizedBox(width: 10),
-          Container(
-            width: 55,
-            height: 55,
-            decoration: BoxDecoration(
-              color: Colors.grey[200],
-              borderRadius: BorderRadius.circular(10),
+          if (isFavorite)
+            Container(
+              width: 55,
+              height: 55,
+              decoration: BoxDecoration(
+                color: Colors.grey[200],
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: IconButton(
+                onPressed: onFavorite,
+                icon: Icon(Icons.favorite_outline, color: Colors.grey[600]),
+              ),
             ),
-            child: IconButton(
-              onPressed: onFavorite,
-              icon: Icon(Icons.favorite_outline, color: Colors.grey[600]),
-            ),
-          ),
         ],
       ),
     );

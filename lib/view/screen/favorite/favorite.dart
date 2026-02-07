@@ -28,6 +28,7 @@ class Favorite extends GetView<FavoritePageControllerImp> {
               onChanged: (val) {
                 controller.checkSearch(val);
               },
+              isFavorite: false,
             ),
             GetBuilder<FavoritePageControllerImp>(
               builder: (controller) {
