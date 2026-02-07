@@ -71,33 +71,30 @@ lib/
 
 ---
 
-## 📸 Screenshots
-### Home Screen
-![Home Screen](assets/screenshots/home.jpg)
+### 📸 (App Screenshots)
 
-### Search Screen
-![Search Screen](assets/screenshots/search.jpg)
-
-### Product Details
-![Product Details](assets/screenshots/product_details.jpg)
-
-### Favorites
-![Favorites](assets/screenshots/favorites.jpg)
-
-### Cart
-![Cart](assets/screenshots/cart.jpg)
-
-### Checkout
-![Checkout](assets/screenshots/checkout.jpg)
-
-### Orders
-![Orders](assets/screenshots/orders.jpg)
-
-### Order Details
-![Order Details](assets/screenshots/order_details.jpg)
-
-### Login / Register
-![Login](assets/screenshots/login.jpg)
+<table>
+  <tr>
+    <td><b>الرئيسية</b></td>
+    <td><b>البحث</b></td>
+    <td><b>تفاصيل المنتج</b></td>
+  </tr>
+  <tr>
+    <td><img src="assets/screenshots/home.jpg" width="250"></td>
+    <td><img src="assets/screenshots/search.jpg" width="250"></td>
+    <td><img src="assets/screenshots/product_details.jpg" width="250"></td>
+  </tr>
+  <tr>
+    <td><b>المفضلة</b></td>
+    <td><b>السلة</b></td>
+    <td><b>الدفع</b></td>
+  </tr>
+  <tr>
+    <td><img src="assets/screenshots/favorites.jpg" width="250"></td>
+    <td><img src="assets/screenshots/cart.jpg" width="250"></td>
+    <td><img src="assets/screenshots/checkout.jpg" width="250"></td>
+  </tr>
+</table>
 
 
 ---
