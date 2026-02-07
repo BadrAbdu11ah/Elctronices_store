@@ -10,9 +10,4 @@ class SuccessSignUpControllerImp extends SuccessSignUpController {
   goToLogin() {
     Get.offAllNamed(MyPages.login);
   }
-
-  @override
-  void onInit() {
-    super.onInit();
-  }
 }

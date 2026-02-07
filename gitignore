@@ -1,0 +1,31 @@
+# Flutter
+build/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.pub-cache
+.pub/
+.idea/
+*.iml
+*.ipr
+*.iws
+.DS_Store
+
+# Dart
+.dart_tool/
+
+# Flutter generated
+generated_plugin_registrant.dart
+
+# Laravel
+/vendor/
+/node_modules/
+/.env
+.phpunit.result.cache
+Homestead.yaml
+Homestead.json
+/storage/*.key
+/public/storage
+/.vscode/
+/.idea/
+*.log

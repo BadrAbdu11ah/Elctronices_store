@@ -1,7 +1,7 @@
 import 'package:electronics_store/core/constant/my_pages.dart';
 import 'package:electronics_store/core/localization/change_local.dart';
 import 'package:electronics_store/data/datasource/static/my_text.dart';
-import 'package:electronics_store/view/widget/choose_language/custom_button.dart';
+import 'package:electronics_store/view/widget/choose_language/custom_button_lang.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -25,7 +25,7 @@ class ChooseLanguage extends GetView<LocaleController> {
             const SizedBox(height: 10),
 
             // Arabic
-            CustomButton(
+            CustomButtonLang(
               lang: MyText.arabic.tr,
               onPressed: () {
                 controller.changeLang("ar");
@@ -34,7 +34,7 @@ class ChooseLanguage extends GetView<LocaleController> {
             ),
 
             // English
-            CustomButton(
+            CustomButtonLang(
               lang: MyText.english.tr,
               onPressed: () {
                 controller.changeLang("en");

@@ -1,4 +1,5 @@
 import 'package:electronics_store/controller/auth/login_controller.dart';
+import 'package:electronics_store/core/class/handling_data_view.dart';
 import 'package:electronics_store/core/constant/my_color.dart';
 import 'package:electronics_store/core/function/alert_exit_app.dart';
 import 'package:electronics_store/core/function/valid_input.dart';
@@ -38,78 +39,90 @@ class Login extends GetView<LoginControllerImp> {
           // إظهار تنبيه للمستخدم قبل الخروج
           alertExitApp();
         },
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
-          child: Form(
-            key: controller.formstate,
-            child: ListView(
-              children: [
-                const CustomLogo(),
-                const SizedBox(height: 10),
-                CustomTextTitleAuth(text: MyText.welcomeBack.tr),
-                const SizedBox(height: 10),
-                CustomTextBodyAuth(text: MyText.loginDescription.tr),
-                const SizedBox(height: 50),
-                CustomTextFormAuth(
-                  valid: (val) => validInput(val!, 5, 20, "email"),
-                  hintText: MyText.enterEmail.tr,
-                  labelText: MyText.email.tr,
-                  iconData: Icons.email_outlined,
-                  myController: controller.email,
+        child: GetBuilder<LoginControllerImp>(
+          builder: (controller) {
+            return HandlingDataView(
+              state: controller.stateRequest,
+              child: Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 30,
+                  vertical: 20,
                 ),
-                const SizedBox(height: 20),
-                GetBuilder<LoginControllerImp>(
-                  builder: (controller) {
-                    return CustomTextFormAuth(
-                      obscureText: controller.isShowPassword,
-                      onTapIcon: () {
-                        controller.showPassword();
-                      },
-                      valid: (val) => validInput(val!, 3, 10, "password"),
-                      hintText: MyText.enterPassword.tr,
-                      labelText: MyText.password.tr,
-                      iconData: controller.isShowPassword
-                          ? Icons.visibility_off
-                          : Icons.visibility,
-                      myController: controller.password,
-                    );
-                  },
-                ),
-                const SizedBox(height: 10),
-                Align(
-                  alignment: AlignmentDirectional.centerEnd,
-                  child: InkWell(
-                    onTap: () {
-                      FocusScope.of(context).unfocus();
-                      controller.goToForgetpassword();
-                    },
-                    child: Text(
-                      MyText.forgetPassword.tr,
-                      style: const TextStyle(fontSize: 14),
-                    ),
+                child: Form(
+                  key: controller.formstate,
+                  child: ListView(
+                    children: [
+                      const CustomLogo(),
+                      const SizedBox(height: 10),
+                      CustomTextTitleAuth(text: MyText.welcomeBack.tr),
+                      const SizedBox(height: 10),
+                      CustomTextBodyAuth(text: MyText.loginDescription.tr),
+                      const SizedBox(height: 50),
+                      CustomTextFormAuth(
+                        valid: (val) => validInput(val!, 5, 20, "email"),
+                        hintText: MyText.enterEmail.tr,
+                        labelText: MyText.email.tr,
+                        iconData: Icons.email_outlined,
+                        myController: controller.email,
+                      ),
+                      const SizedBox(height: 20),
+                      GetBuilder<LoginControllerImp>(
+                        builder: (controller) {
+                          return CustomTextFormAuth(
+                            obscureText: controller.isShowPassword,
+                            onTapIcon: () {
+                              controller.showPassword();
+                            },
+                            valid: (val) => validInput(val!, 3, 10, "password"),
+                            hintText: MyText.enterPassword.tr,
+                            labelText: MyText.password.tr,
+                            iconData: controller.isShowPassword
+                                ? Icons.visibility_off
+                                : Icons.visibility,
+                            myController: controller.password,
+                          );
+                        },
+                      ),
+                      const SizedBox(height: 10),
+                      Align(
+                        alignment: AlignmentDirectional.centerEnd,
+                        child: InkWell(
+                          onTap: () {
+                            FocusScope.of(context).unfocus();
+                            controller.goToForgetpassword();
+                          },
+                          child: Text(
+                            MyText.forgetPassword.tr,
+                            style: const TextStyle(fontSize: 14),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 30),
+                      CustomButtonAuth(
+                        text: MyText.signIn.tr,
+                        onPressed: () async {
+                          if (controller.formstate.currentState?.validate() ==
+                              true) {
+                            FocusScope.of(context).unfocus();
+                            await controller.login();
+                          }
+                        },
+                      ),
+                      const SizedBox(height: 30),
+                      CustomTextConvert(
+                        textone: MyText.dontHaveAccount.tr,
+                        texttow: MyText.goSignUp.tr,
+                        onTap: () {
+                          FocusScope.of(context).unfocus();
+                          controller.goToSignUp();
+                        },
+                      ),
+                    ],
                   ),
                 ),
-                const SizedBox(height: 30),
-                CustomButtonAuth(
-                  text: MyText.signIn.tr,
-                  onPressed: () {
-                    if (controller.formstate.currentState?.validate() == true) {
-                      controller.login();
-                    }
-                  },
-                ),
-                const SizedBox(height: 30),
-                CustomTextConvert(
-                  textone: MyText.dontHaveAccount.tr,
-                  texttow: MyText.goSignUp.tr,
-                  onTap: () {
-                    FocusScope.of(context).unfocus();
-                    controller.goToSignUp();
-                  },
-                ),
-              ],
-            ),
-          ),
+              ),
+            );
+          },
         ),
       ),
     );

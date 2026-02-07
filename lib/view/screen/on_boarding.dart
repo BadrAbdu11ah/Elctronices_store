@@ -11,11 +11,14 @@ class OnBoarding extends StatelessWidget {
     return Scaffold(
       backgroundColor: MyColor.bgColorOnBoarding,
       body: SafeArea(
-        child: Column(
-          children: [
-            Expanded(flex: 4, child: CustomSliderOnBoarding()),
-            Expanded(child: CustomDotControllerOnBoarding()),
-          ],
+        child: Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: Column(
+            children: [
+              Expanded(flex: 4, child: CustomSliderOnBoarding()),
+              Expanded(child: CustomDotControllerOnBoarding()),
+            ],
+          ),
         ),
       ),
     );

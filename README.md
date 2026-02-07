@@ -1,51 +1,175 @@
-# 📱 Electronics Store (Flutter)
+# 📱 Electronics Store App (Flutter + Laravel)
 
-An electronics store application built with **Flutter**.  
-The project is currently **work in progress** and focuses on building frontend UI and application structure.
-
----
-
-## 📌 Project Status
-The project is currently in the **UI development stage**, focusing on user experience and clean project architecture.
-
-### Available Screens:
-• Change Language  
-• Onboarding  
-• Authentication UI:
-  • Login  
-  • Sign Up  
-  • Verification / Success Screens  
+مشروع متجر إلكتروني لتطبيقات الجوال مبني باستخدام **Flutter** للواجهة الأمامية و **Laravel** كخلفية (REST API). المشروع مصمم بأسلوب معماري واضح وقابل للتوسع، ويغطي دورة الطلب كاملة من التصفح حتى إنشاء الطلب.
 
 ---
 
-## 🌐 Localization
-• Supports two languages:
-  • Arabic  
-  • English  
+## 🚀 Features
+
+### 🛒 User Side
+
+* تسجيل الدخول / إنشاء حساب
+* عرض المنتجات حسب التصنيفات
+* البحث عن المنتجات
+* صفحة تفاصيل المنتج
+* إضافة / حذف من المفضلة (Favorites)
+* عربة التسوق (Cart)
+* تطبيق كوبونات الخصم
+* إدارة العناوين (إضافة / تعديل / حذف)
+* إتمام الطلب (Checkout)
+* عرض الطلبات (Orders)
+* صفحة تفاصيل الطلب (Order Details)
+
+### ⚙️ Backend (Laravel API)
+
+* RESTful API
+* مصادقة المستخدمين
+* إدارة المنتجات والتصنيفات
+* إدارة الطلبات
+* نظام الكوبونات
+* ربط حقيقي بقاعدة البيانات
 
 ---
 
-## 🛠️ Project Purpose
-• Practical learning of:
-  • Flutter UI development  
-  • Project structuring using GetX  
-  • Navigation and localization  
-• This project is **educational and experimental**, not a final product.
+## 🧠 Architecture & Concepts
+
+* Source of Truth واحد للبيانات
+* فصل منطق البيانات عن الواجهة (MVC / Clean-ish Architecture)
+* Controllers مستقلة (App Controller / User Controller)
+* التعامل الواضح مع الحالات:
+
+  * Loading
+  * Success
+  * Error / Offline
+* عدم تكرار الحالة بين الصفحات
+* Navigation منفصل عن منطق البيانات
 
 ---
 
-## 🔜 Future Plans
-• Backend or API integration (Authentication)  
-• Improve in-app language switching  
-• Products listing screens  
-• Product details screen  
-• Shopping cart  
+## 🛠️ Tech Stack
+
+### Frontend
+
+* Flutter
+* GetX (State Management & Navigation)
+* REST API Integration
+
+### Backend
+
+* Laravel
+* MySQL
+* REST API
 
 ---
 
-## 🚀 Getting Started
+## 📂 Project Structure (Flutter)
+
+```
+lib/
+├── core/
+├── data/
+├── controller/
+├── view/
+│   ├── screens/
+│   └── widgets/
+├── routes/
+└── main.dart
+```
+
+---
+
+## 📸 Screenshots
+
+> سيتم إضافة صور للتطبيق لاحقًا
+
+---
+
+## 🔧 Setup & Installation
+
+### Backend (Laravel)
 
 ```bash
-git clone https://github.com/BadrAbdu11ah/Elctronices_store.git
+composer install
+cp .env.example .env
+php artisan key:generate
+php artisan migrate
+php artisan serve
+```
+
+### Frontend (Flutter)
+
+```bash
 flutter pub get
 flutter run
+```
+
+---
+
+## 📌 Notes
+
+* المشروع ما زال قابل للتوسع (Payments / Admin Panel)
+* مناسب كنواة منتج حقيقي أو كنموذج Portfolio قوي
+
+---
+
+## 👤 Author
+
+**Badr Abdullah**
+
+* Flutter Developer
+* Laravel Backend
+
+---
+
+# 🌍 English Version
+
+## 📱 Electronics Store App
+
+A mobile **e-commerce application** built with **Flutter** as frontend and **Laravel** as backend (REST API). The project follows a clean, scalable architecture and covers the full order lifecycle.
+
+---
+
+## 🚀 Features
+
+* Authentication (Login / Register)
+* Product listing & categories
+* Product search
+* Product details page
+* Favorites system
+* Shopping cart
+* Coupon system
+* Address management
+* Checkout flow
+* Orders & order details
+
+---
+
+## 🧠 Architecture
+
+* Single Source of Truth
+* Separation of UI and business logic
+* Clean controllers structure
+* Explicit state handling (Loading / Success / Error)
+* Scalable and maintainable codebase
+
+---
+
+## 🛠️ Tech Stack
+
+* Flutter
+* GetX
+* Laravel
+* MySQL
+* REST API
+
+---
+
+## 📌 Status
+
+✅ Actively developed
+
+---
+
+## 📄 License
+
+This project is for learning and portfolio purposes.

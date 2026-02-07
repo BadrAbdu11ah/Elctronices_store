@@ -1,6 +1,6 @@
 import 'package:electronics_store/core/constant/my_pages.dart';
 import 'package:electronics_store/core/services/my_service.dart';
-import 'package:electronics_store/data/datasource/static/static.dart';
+import 'package:electronics_store/data/datasource/static/my_text/on_boarding_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -10,62 +10,63 @@ abstract class OnBoardingController extends GetxController {
   void getOnPageChanged(int index);
 }
 
-// تعريف الكلاس الذي يقوم بتنفيذ (Implementation) منطق شاشات الترحيب
+// الكلاس المسؤول عن تنفيذ منطق شاشات الترحيب (OnBoarding)
 class OnBoardingControllerImp extends OnBoardingController {
-  // متحكم Flutter Widget المسؤول عن التنقل بين الصفحات (PageView)
+  // المتحكم المسؤول عن التنقل بين صفحات الـ PageView
   late PageController pageController;
-  // متغير لحفظ فهرس (Index) الصفحة المعروضة حالياً (يبدأ من 0)
+
+  // رقم الصفحة الحالية (يبدأ من 0)
   int currentPage = 0;
 
+  // الوصول إلى خدمة التخزين (SharedPreferences)
   MyService myService = Get.find();
 
   // ------------------------------------------------------------------
 
   @override
-  // دالة تُستدعى عندما يقوم المستخدم بالسحب والتنقل يدوياً إلى صفحة جديدة
+  // تُستدعى عند تغيير الصفحة بالسحب اليدوي
   getOnPageChanged(int index) {
-    // تحديث رقم الصفحة الحالية بالفهرس الجديد
-    currentPage = index;
-    // إعلام الواجهة (Widgets) بأن البيانات قد تغيرت لإعادة البناء (لتحديث المؤشرات مثلاً)
-    update();
+    currentPage = index; // تحديث رقم الصفحة الحالية
+    update(); // تحديث الواجهة (مثل المؤشرات أسفل الشاشة)
   }
 
   // ------------------------------------------------------------------
 
   @override
-  // دالة تُستدعى عند الضغط على زر "التالي" (Next Button)
+  // تُستدعى عند الضغط على زر "التالي"
   next() {
-    // زيادة رقم الصفحة الحالية بمقدار 1 للانتقال إلى الصفحة التالية
-    currentPage++;
+    currentPage++; // الانتقال إلى الصفحة التالية
 
+    // إذا وصل المستخدم لآخر صفحة → الانتقال لصفحة تسجيل الدخول
     if (currentPage > onBoardingList.length - 1) {
-      myService.sharedPreferences.setString("onboarding", "1");
+      myService.sharedPreferences.setString("step", "1");
       Get.offAllNamed(MyPages.login);
+      return;
     }
-    // تحريك سلس (Animated) لمتحكم الصفحة للانتقال إلى رقم الصفحة الجديدة
+
+    // تحريك الصفحة الجديدة بشكل سلس
     pageController.animateToPage(
-      currentPage, // الانتقال إلى الصفحة الجديدة (الحالية + 1)
-      duration: Duration(
-        milliseconds: 900,
-      ), // زمن التحريك: 900 مللي ثانية (0.9 ثانية)
-      curve: Curves.easeInOut, // نمط الحركة: بدء بطيء ونهاية بطيئة
+      currentPage,
+      duration: Duration(milliseconds: 900), // مدة الحركة
+      curve: Curves.easeInOut, // حركة سلسة
     );
   }
 
   // ------------------------------------------------------------------
 
   @override
-  // دالة تُستدعى عند إنشاء المتحكم لأول مرة (Initialization)
-  void onInit() {
-    // تهيئة متحكم الصفحة (PageController) ليكون جاهزاً للاستخدام
-    pageController = PageController();
-    // استدعاء دالة التهيئة الأساسية للفصل الأب
-    super.onInit();
+  // زر "تخطي" → الانتقال مباشرة لصفحة تسجيل الدخول
+  void skip() {
+    myService.sharedPreferences.setString("step", "1");
+    Get.offAllNamed(MyPages.login);
   }
 
+  // ------------------------------------------------------------------
+
   @override
-  void skip() {
-    myService.sharedPreferences.setString("onboarding", "1");
-    Get.offAllNamed(MyPages.login);
+  // تُستدعى عند إنشاء المتحكم لأول مرة
+  void onInit() {
+    pageController = PageController(); // تهيئة متحكم الصفحات
+    super.onInit(); // استدعاء التهيئة الأساسية
   }
 }
