@@ -7,63 +7,56 @@
 ## 🚀 Features
 
 ### 🛒 User Side
-
-* تسجيل الدخول / إنشاء حساب
-* عرض المنتجات حسب التصنيفات
-* البحث عن المنتجات
-* صفحة تفاصيل المنتج
-* إضافة / حذف من المفضلة (Favorites)
-* عربة التسوق (Cart)
-* تطبيق كوبونات الخصم
-* إدارة العناوين (إضافة / تعديل / حذف)
-* إتمام الطلب (Checkout)
-* عرض الطلبات (Orders)
-* صفحة تفاصيل الطلب (Order Details)
+- تسجيل الدخول / إنشاء حساب
+- عرض المنتجات حسب التصنيفات
+- البحث عن المنتجات
+- صفحة تفاصيل المنتج
+- إضافة / حذف من المفضلة (Favorites)
+- عربة التسوق (Cart)
+- تطبيق كوبونات الخصم
+- إدارة العناوين (إضافة / تعديل / حذف)
+- إتمام الطلب (Checkout)
+- عرض الطلبات (Orders)
+- صفحة تفاصيل الطلب (Order Details)
 
 ### ⚙️ Backend (Laravel API)
-
-* RESTful API
-* مصادقة المستخدمين
-* إدارة المنتجات والتصنيفات
-* إدارة الطلبات
-* نظام الكوبونات
-* ربط حقيقي بقاعدة البيانات
+- RESTful API
+- مصادقة المستخدمين
+- إدارة المنتجات والتصنيفات
+- إدارة الطلبات
+- نظام الكوبونات
+- ربط حقيقي بقاعدة البيانات
 
 ---
 
 ## 🧠 Architecture & Concepts
-
-* Source of Truth واحد للبيانات
-* فصل منطق البيانات عن الواجهة (MVC / Clean-ish Architecture)
-* Controllers مستقلة (App Controller / User Controller)
-* التعامل الواضح مع الحالات:
-
-  * Loading
-  * Success
-  * Error / Offline
-* عدم تكرار الحالة بين الصفحات
-* Navigation منفصل عن منطق البيانات
+- Source of Truth واحد للبيانات
+- فصل منطق البيانات عن الواجهة (MVC / Clean-ish Architecture)
+- Controllers مستقلة (App Controller / User Controller)
+- التعامل الواضح مع الحالات:
+  - Loading
+  - Success
+  - Error / Offline
+- عدم تكرار الحالة بين الصفحات
+- Navigation منفصل عن منطق البيانات
 
 ---
 
 ## 🛠️ Tech Stack
 
 ### Frontend
-
-* Flutter
-* GetX (State Management & Navigation)
-* REST API Integration
+- Flutter
+- GetX (State Management & Navigation)
+- REST API Integration
 
 ### Backend
-
-* Laravel
-* MySQL
-* REST API
+- Laravel
+- MySQL
+- REST API
 
 ---
 
 ## 📂 Project Structure (Flutter)
-
 ```
 lib/
 ├── core/
@@ -79,15 +72,40 @@ lib/
 ---
 
 ## 📸 Screenshots
+> ضع الصور في مجلد `assets/screenshots/` داخل المشروع.
 
-> سيتم إضافة صور للتطبيق لاحقًا
+### Home Screen
+![Home Screen](assets/screenshots/home.jpg)
+
+### Search Screen
+![Search Screen](assets/screenshots/search.jpg)
+
+### Product Details
+![Product Details](assets/screenshots/product_details.jpg)
+
+### Favorites
+![Favorites](assets/screenshots/favorites.jpg)
+
+### Cart
+![Cart](assets/screenshots/cart.jpg)
+
+### Checkout
+![Checkout](assets/screenshots/checkout.jpg)
+
+### Orders
+![Orders](assets/screenshots/orders.jpg)
+
+### Order Details
+![Order Details](assets/screenshots/order_details.jpg)
+
+### Login / Register
+![Login](assets/screenshots/login.jpg)
 
 ---
 
 ## 🔧 Setup & Installation
 
 ### Backend (Laravel)
-
 ```bash
 composer install
 cp .env.example .env
@@ -97,7 +115,6 @@ php artisan serve
 ```
 
 ### Frontend (Flutter)
-
 ```bash
 flutter pub get
 flutter run
@@ -106,18 +123,16 @@ flutter run
 ---
 
 ## 📌 Notes
-
-* المشروع ما زال قابل للتوسع (Payments / Admin Panel)
-* مناسب كنواة منتج حقيقي أو كنموذج Portfolio قوي
+- المشروع ما زال قابل للتوسع (Payments / Admin Panel)
+- مناسب كنواة منتج حقيقي أو كنموذج Portfolio قوي
 
 ---
 
 ## 👤 Author
-
 **Badr Abdullah**
 
-* Flutter Developer
-* Laravel Backend
+- Flutter Developer
+- Laravel Backend
 
 ---
 
@@ -131,36 +146,36 @@ A mobile **e-commerce application** built with **Flutter** as frontend and **Lar
 
 ## 🚀 Features
 
-* Authentication (Login / Register)
-* Product listing & categories
-* Product search
-* Product details page
-* Favorites system
-* Shopping cart
-* Coupon system
-* Address management
-* Checkout flow
-* Orders & order details
+- Authentication (Login / Register)
+- Product listing & categories
+- Product search
+- Product details page
+- Favorites system
+- Shopping cart
+- Coupon system
+- Address management
+- Checkout flow
+- Orders & order details
 
 ---
 
 ## 🧠 Architecture
 
-* Single Source of Truth
-* Separation of UI and business logic
-* Clean controllers structure
-* Explicit state handling (Loading / Success / Error)
-* Scalable and maintainable codebase
+- Single Source of Truth
+- Separation of UI and business logic
+- Clean controllers structure
+- Explicit state handling (Loading / Success / Error)
+- Scalable and maintainable codebase
 
 ---
 
 ## 🛠️ Tech Stack
 
-* Flutter
-* GetX
-* Laravel
-* MySQL
-* REST API
+- Flutter
+- GetX
+- Laravel
+- MySQL
+- REST API
 
 ---
 

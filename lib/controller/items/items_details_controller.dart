@@ -72,6 +72,7 @@ class ItemsDetailsControllerImp extends ItemsDetailsController {
   void addCart() {
     cartControllerImp.add(itemsModel.itemsId.toString());
     count++;
+    Get.rawSnackbar(title: "تنبيه", message: "تم إضافة المنتج إلى السلة");
     update();
   }
 
