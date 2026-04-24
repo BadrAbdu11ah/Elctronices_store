@@ -1,4 +1,4 @@
-import 'package:electronics_store/bindings/init_binding.dart';
+import 'package:electronics_store/binding/init_binding.dart';
 import 'package:electronics_store/core/localization/change_local.dart';
 import 'package:electronics_store/my_translations.dart';
 import 'package:electronics_store/core/services/my_service.dart';
