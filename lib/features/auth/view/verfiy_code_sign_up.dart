@@ -1,6 +1,6 @@
 import 'package:electronics_store/features/auth/controller/verfiy_code_sign_up_controller.dart';
 import 'package:electronics_store/core/class/handling_data_view.dart';
-import 'package:electronics_store/data/datasource/static/my_text.dart';
+import 'package:electronics_store/data/datasurce/static/my_text.dart';
 import 'package:electronics_store/features/auth/widgets/custom_text_body_auth.dart';
 import 'package:electronics_store/features/auth/widgets/custom_text_title_auth.dart';
 import 'package:flutter/material.dart';

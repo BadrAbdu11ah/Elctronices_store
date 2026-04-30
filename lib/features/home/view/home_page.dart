@@ -1,6 +1,6 @@
 import 'package:electronics_store/features/home/controller/home_page_controller.dart';
 import 'package:electronics_store/core/class/handling_data_view.dart';
-import 'package:electronics_store/data/datasource/static/my_text.dart';
+import 'package:electronics_store/data/datasurce/static/my_text.dart';
 import 'package:electronics_store/features/home/widgets/list_categories_home.dart';
 import 'package:electronics_store/features/home/widgets/custom_card_home.dart';
 import 'package:electronics_store/features/home/widgets/list_items_home.dart';

@@ -1,6 +1,6 @@
 import 'package:electronics_store/core/constant/my_pages.dart';
 import 'package:electronics_store/core/localization/change_local.dart';
-import 'package:electronics_store/data/datasource/static/my_text.dart';
+import 'package:electronics_store/data/datasurce/static/my_text.dart';
 import 'package:electronics_store/features/choose_language/widgets/custom_button_lang.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

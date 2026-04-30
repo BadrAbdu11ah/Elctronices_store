@@ -1,22 +1,20 @@
-import 'package:electronics_store/core/class/crud.dart';
-import 'package:electronics_store/my_link_api.dart';
+import 'package:electronics_store/api_endpoints.dart';
+import 'package:electronics_store/core/services/api_service.dart';
 
 class HomeData {
-  Crud curd;
+  final ApiService api;
 
-  HomeData(this.curd);
+  HomeData(this.api);
 
+  // 1. جلب بيانات الصفحة الرئيسية (أقسام، عروض، منتجات)
   Future getData() async {
-    var response = await curd.postData(MyLinkApi.homeLink, {});
-
+    var response = await api.get(ApiEndpoints.home);
     return response.fold((l) => l, (r) => r);
   }
 
+  // 2. البحث عن المنتجات
   Future searchData(String search) async {
-    var response = await curd.postData(MyLinkApi.searchLink, {
-      "search": search,
-    });
-
+    var response = await api.post(ApiEndpoints.search, {"search": search});
     return response.fold((l) => l, (r) => r);
   }
 }

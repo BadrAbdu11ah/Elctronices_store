@@ -1,4 +1,4 @@
-import 'package:electronics_store/data/datasource/static/my_text.dart';
+import 'package:electronics_store/data/datasurce/static/my_text.dart';
 
 Map<String, String> cartAr = {
   MyText.cartPageTitle: "سلة المشتريات",

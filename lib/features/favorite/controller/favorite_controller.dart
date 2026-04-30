@@ -1,7 +1,7 @@
 import 'package:electronics_store/core/class/state_request.dart';
 import 'package:electronics_store/core/function/handing_data_controller.dart';
 import 'package:electronics_store/core/services/my_service.dart';
-import 'package:electronics_store/data/datasource/remote/favorite_data.dart';
+import 'package:electronics_store/features/favorite/data/favorite_data.dart';
 import 'package:get/get.dart';
 
 abstract class FavoriteController extends GetxController {

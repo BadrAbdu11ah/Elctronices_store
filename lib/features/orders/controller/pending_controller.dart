@@ -3,7 +3,7 @@ import 'package:electronics_store/core/constant/my_pages.dart';
 import 'package:electronics_store/core/function/handing_data_controller.dart';
 import 'package:electronics_store/core/services/my_service.dart';
 import 'package:electronics_store/features/orders/data/orders_pending_data.dart';
-import 'package:electronics_store/data/datasource/static/my_text.dart';
+import 'package:electronics_store/data/datasurce/static/my_text.dart';
 import 'package:electronics_store/data/model/orders_model.dart';
 import 'package:get/get.dart';
 

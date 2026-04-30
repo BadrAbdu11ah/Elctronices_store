@@ -1,23 +1,20 @@
-import 'package:electronics_store/core/class/crud.dart';
-import 'package:electronics_store/my_link_api.dart';
+import 'package:electronics_store/api_endpoints.dart';
+import 'package:electronics_store/core/services/api_service.dart';
 
 class FavoritePageData {
-  Crud curd;
+  final ApiService api;
 
-  FavoritePageData(this.curd);
+  FavoritePageData(this.api);
 
-  Future viewFavorite(String usersid) async {
-    var response = await curd.postData(MyLinkApi.favoriteView, {
-      "usersid": usersid,
-    });
+  // 1. عرض كافة المنتجات في صفحة المفضلة
+  Future viewFavorite() async {
+    var response = await api.get(ApiEndpoints.favoriteView);
     return response.fold((l) => l, (r) => r);
   }
 
-  void removeFavorite(String usersid, String itemsid) async {
-    var response = await curd.postData(MyLinkApi.favoriteRemove, {
-      "usersid": usersid,
-      "itemsid": itemsid,
-    });
+  // 2. حذف منتج من المفضلة (داخل صفحة المفضلة)
+  Future removeData(int itemId) async {
+    var response = await api.delete(ApiEndpoints.favoriteRemove(itemId));
     return response.fold((l) => l, (r) => r);
   }
 }

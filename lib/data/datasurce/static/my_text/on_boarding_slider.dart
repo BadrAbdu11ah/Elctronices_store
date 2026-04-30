@@ -1,5 +1,5 @@
 import 'package:electronics_store/core/constant/my_image_asset.dart';
-import 'package:electronics_store/data/datasource/static/my_text.dart';
+import 'package:electronics_store/data/datasurce/static/my_text.dart';
 import 'package:electronics_store/data/model/on_boarding_model.dart';
 import 'package:get/get.dart';
 

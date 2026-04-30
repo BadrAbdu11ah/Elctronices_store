@@ -1,13 +1,19 @@
-import 'package:electronics_store/core/class/crud.dart';
-import 'package:electronics_store/my_link_api.dart';
+import 'package:electronics_store/api_endpoints.dart';
+import 'package:electronics_store/core/services/api_service.dart';
 
 class AddressData {
-  Crud curd;
+  final ApiService api;
 
-  AddressData(this.curd);
+  AddressData(this.api);
 
+  // 1. جلب كافة العناوين (استخدام GET)
+  Future getData() async {
+    var response = await api.get(ApiEndpoints.addressView);
+    return response.fold((l) => l, (r) => r);
+  }
+
+  // 2. إضافة عنوان جديد (استخدام POST)
   Future addData(
-    String usersid,
     String name,
     String city,
     String street,
@@ -15,8 +21,7 @@ class AddressData {
     String long,
     String phone,
   ) async {
-    var response = await curd.postData(MyLinkApi.addressAdd, {
-      "usersid": usersid,
+    var response = await api.post(ApiEndpoints.addressAdd, {
       "name": name,
       "city": city,
       "street": street,
@@ -27,15 +32,9 @@ class AddressData {
     return response.fold((l) => l, (r) => r);
   }
 
-  Future getData(String usersid) async {
-    var response = await curd.postData(MyLinkApi.addressView, {
-      'usersid': usersid,
-    });
-    return response.fold((l) => l, (r) => r);
-  }
-
+  // 3. تعديل عنوان موجود (استخدام PUT وتمرير الـ ID في الرابط)
   Future editData(
-    String addressesid,
+    int addressId,
     String name,
     String city,
     String street,
@@ -43,8 +42,7 @@ class AddressData {
     String long,
     String phone,
   ) async {
-    var response = await curd.postData(MyLinkApi.addressEdit, {
-      'addressesid': addressesid,
+    var response = await api.put(ApiEndpoints.addressEdit(addressId), {
       'name': name,
       'city': city,
       'street': street,
@@ -55,10 +53,9 @@ class AddressData {
     return response.fold((l) => l, (r) => r);
   }
 
-  void removeData(String addressesid) async {
-    var response = await curd.postData(MyLinkApi.addressRemove, {
-      'addressesid': addressesid,
-    });
+  // 4. حذف عنوان (استخدام DELETE وتمرير الـ ID في الرابط)
+  Future removeData(int addressId) async {
+    var response = await api.delete(ApiEndpoints.addressRemove(addressId));
     return response.fold((l) => l, (r) => r);
   }
 }

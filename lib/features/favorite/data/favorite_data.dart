@@ -1,14 +1,14 @@
 import 'package:electronics_store/api_endpoints.dart';
 import 'package:electronics_store/core/services/api_service.dart';
 
-class CartPageData {
+class FavoriteData {
   final ApiService api;
 
-  CartPageData(this.api);
+  FavoriteData(this.api);
 
-  // 1. عرض محتويات السلة
-  Future viewCart() async {
-    var response = await api.get(ApiEndpoints.cartView);
+  // 1. إضافة منتج للمفضلة
+  Future addFavorite(int itemId) async {
+    var response = await api.post(ApiEndpoints.favoriteAdd(itemId), {});
     return response.fold((l) => l, (r) => r);
   }
 
@@ -18,9 +18,9 @@ class CartPageData {
     return response.fold((l) => l, (r) => r);
   }
 
-  // 3. فحص الكوبون
-  Future checkCoupon(String couponsName) async {
-    var response = await api.get(ApiEndpoints.checkCoupon(couponsName));
+  // 3. عرض كافة المنتجات المفضلة للمستخدم الحالي
+  Future viewFavorite() async {
+    var response = await api.get(ApiEndpoints.favoriteView);
     return response.fold((l) => l, (r) => r);
   }
 }

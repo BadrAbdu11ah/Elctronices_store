@@ -2,7 +2,7 @@ import 'package:electronics_store/features/forget_password/controller/reset_pass
 import 'package:electronics_store/core/class/handling_data_view.dart';
 import 'package:electronics_store/core/constant/my_color.dart';
 import 'package:electronics_store/core/function/valid_input.dart';
-import 'package:electronics_store/data/datasource/static/my_text.dart';
+import 'package:electronics_store/data/datasurce/static/my_text.dart';
 import 'package:electronics_store/features/auth/widgets/custom_button_auth.dart';
 import 'package:electronics_store/features/auth/widgets/custom_text_body_auth.dart';
 import 'package:electronics_store/features/auth/widgets/custom_text_form_auth.dart';

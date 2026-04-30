@@ -1,7 +1,7 @@
 import 'package:electronics_store/features/auth/controller/success_sign_up_controller.dart';
 import 'package:electronics_store/core/constant/my_color.dart';
 import 'package:electronics_store/core/function/alert_exit_app.dart';
-import 'package:electronics_store/data/datasource/static/my_text.dart';
+import 'package:electronics_store/data/datasurce/static/my_text.dart';
 import 'package:electronics_store/features/auth/widgets/custom_button_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

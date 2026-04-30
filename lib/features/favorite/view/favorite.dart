@@ -1,6 +1,6 @@
 import 'package:electronics_store/features/favorite/controller/favorite_page_controller.dart';
 import 'package:electronics_store/core/class/handling_data_view.dart';
-import 'package:electronics_store/data/datasource/static/my_text.dart';
+import 'package:electronics_store/data/datasurce/static/my_text.dart';
 import 'package:electronics_store/widgets/custom_app_bar.dart';
 import 'package:electronics_store/features/favorite/widgets/custom_card_favorite.dart';
 import 'package:flutter/material.dart';

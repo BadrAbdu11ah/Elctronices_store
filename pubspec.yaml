@@ -78,6 +78,7 @@ dependencies:
   image_pickers: ^2.0.0+2
   #
   flutter_otp_text_field: ^1.5.1+1
+  flutter_secure_storage: ^9.2.4
 
 
 

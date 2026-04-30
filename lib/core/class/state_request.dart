@@ -7,4 +7,5 @@ enum StateRequest {
   serverfailure,
   offlinefailure,
   none,
+  noData,
 }

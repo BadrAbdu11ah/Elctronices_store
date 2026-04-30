@@ -1,5 +1,5 @@
 import 'package:electronics_store/core/class/crud.dart';
-import 'package:electronics_store/my_link_api.dart';
+import 'package:electronics_store/api_endpoints.dart';
 
 class OrdersDetailsData {
   Crud curd;

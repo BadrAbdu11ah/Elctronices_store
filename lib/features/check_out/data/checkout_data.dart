@@ -1,13 +1,14 @@
-import 'package:electronics_store/core/class/crud.dart';
-import 'package:electronics_store/my_link_api.dart';
+import 'package:electronics_store/api_endpoints.dart';
+import 'package:electronics_store/core/services/api_service.dart';
 
 class CheckoutData {
-  Crud curd;
+  final ApiService api;
 
-  CheckoutData(this.curd);
+  CheckoutData(this.api);
 
-  Future getData(Map data) async {
-    var response = await curd.postData(MyLinkApi.checkout, data);
+  // إرسال بيانات الطلب لإنشاء طلب جديد
+  Future checkout(Map<String, dynamic> data) async {
+    var response = await api.post(ApiEndpoints.checkout, data);
     return response.fold((l) => l, (r) => r);
   }
 }
