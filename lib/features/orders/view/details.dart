@@ -1,7 +1,7 @@
 import 'package:electronics_store/features/orders/controller/details_controller.dart';
 import 'package:electronics_store/core/class/handling_data_view.dart';
 import 'package:electronics_store/core/constant/my_color.dart';
-import 'package:electronics_store/data/datasurce/static/my_text.dart';
+import 'package:electronics_store/data/static/my_text.dart';
 import 'package:electronics_store/features/orders/widgets/details/card_orders_details.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

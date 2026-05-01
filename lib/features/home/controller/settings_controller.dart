@@ -1,6 +1,6 @@
 import 'package:electronics_store/core/constant/my_pages.dart';
 import 'package:electronics_store/core/services/my_service.dart';
-import 'package:electronics_store/data/datasurce/static/my_text.dart';
+import 'package:electronics_store/data/static/my_text.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

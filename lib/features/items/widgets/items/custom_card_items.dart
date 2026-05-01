@@ -4,7 +4,7 @@ import 'package:electronics_store/features/items/controller/items_controller.dar
 import 'package:electronics_store/core/constant/my_color.dart';
 import 'package:electronics_store/core/constant/my_image_asset.dart';
 import 'package:electronics_store/core/function/translate_database.dart';
-import 'package:electronics_store/data/datasurce/static/my_text.dart';
+import 'package:electronics_store/data/static/my_text.dart';
 import 'package:electronics_store/data/model/items_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

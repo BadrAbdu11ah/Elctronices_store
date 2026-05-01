@@ -2,7 +2,7 @@ import 'package:electronics_store/features/check_out/controller/check_out_contro
 import 'package:electronics_store/core/class/handling_data_view.dart';
 import 'package:electronics_store/core/constant/my_color.dart';
 import 'package:electronics_store/core/constant/my_image_asset.dart';
-import 'package:electronics_store/data/datasurce/static/my_text.dart';
+import 'package:electronics_store/data/static/my_text.dart';
 import 'package:electronics_store/features/check_out/widgets/bottom_checkout.dart';
 import 'package:electronics_store/features/check_out/widgets/card_address_checkout.dart';
 import 'package:electronics_store/features/check_out/widgets/card_delivery_type.dart';

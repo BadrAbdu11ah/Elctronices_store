@@ -1,7 +1,7 @@
 import 'package:electronics_store/features/items/controller/items_details_controller.dart';
 import 'package:electronics_store/core/class/handling_data_view.dart';
 import 'package:electronics_store/core/function/translate_database.dart';
-import 'package:electronics_store/data/datasurce/static/my_text.dart';
+import 'package:electronics_store/data/static/my_text.dart';
 import 'package:electronics_store/features/items/widgets/items_datails/custom_bottom_item.dart';
 import 'package:electronics_store/features/items/widgets/items_datails/custom_title_dec_color.dart';
 import 'package:electronics_store/features/items/widgets/items_datails/items_details_image.dart';

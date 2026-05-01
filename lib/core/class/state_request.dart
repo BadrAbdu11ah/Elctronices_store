@@ -4,8 +4,8 @@ enum StateRequest {
   loading,
   success,
   failure,
-  serverfailure,
-  offlinefailure,
+  serverFailure,
+  offlineFailure,
   none,
   noData,
 }

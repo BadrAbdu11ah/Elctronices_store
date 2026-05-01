@@ -14,12 +14,14 @@ class HandlingDataView extends StatelessWidget {
         return Center(
           child: CircularProgressIndicator(color: Colors.blueAccent),
         );
-      case StateRequest.offlinefailure:
+      case StateRequest.offlineFailure:
         return Center(child: Text("Offline Failure"));
-      case StateRequest.serverfailure:
+      case StateRequest.serverFailure:
         return Center(child: Text("Server Failure"));
-      case StateRequest.failure:
+      case StateRequest.noData:
         return Center(child: Text("No Data"));
+      case StateRequest.failure:
+        return Center(child: Text("Failure"));
       default:
         return child;
     }

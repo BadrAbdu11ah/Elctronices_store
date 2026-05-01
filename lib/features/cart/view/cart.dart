@@ -1,7 +1,7 @@
 import 'package:electronics_store/features/cart/controller/cart_page_controller.dart';
 import 'package:electronics_store/core/class/handling_data_view.dart';
 import 'package:electronics_store/core/function/translate_database.dart';
-import 'package:electronics_store/data/datasurce/static/my_text.dart';
+import 'package:electronics_store/data/static/my_text.dart';
 import 'package:electronics_store/features/cart/widgets/custom_bottom_cart.dart';
 import 'package:electronics_store/features/cart/widgets/custom_card_cart.dart';
 import 'package:electronics_store/features/cart/widgets/top_count_item_cart.dart';

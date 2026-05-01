@@ -40,7 +40,7 @@ class AddressView extends GetView<AddressViewControllerImp> {
                       );
                     },
                     onEdit: () {
-                      controller.editAddress();
+                      controller.goToEditAddress();
                     },
                   );
                 },

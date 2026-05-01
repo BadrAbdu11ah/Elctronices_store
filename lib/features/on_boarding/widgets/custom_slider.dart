@@ -1,5 +1,5 @@
 import 'package:electronics_store/features/on_boarding/controller/on_boarding_controller.dart';
-import 'package:electronics_store/data/datasurce/static/my_text/on_boarding_slider.dart';
+import 'package:electronics_store/data/static/my_text/on_boarding_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

@@ -2,19 +2,21 @@ import 'dart:convert';
 import 'package:dartz/dartz.dart';
 import 'package:electronics_store/core/class/state_request.dart';
 import 'package:electronics_store/core/function/check_internet.dart';
+import 'package:electronics_store/core/services/my_service.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 
 class ApiService {
+  final MyService myService;
   final String baseUrl;
   final FlutterSecureStorage storage = const FlutterSecureStorage();
 
-  ApiService({required this.baseUrl});
+  ApiService({required this.baseUrl, required this.myService});
 
-  // // جلب التوكن المخزن عند تسجيل الدخول
+  // جلب التوكن المخزن عند تسجيل الدخول
   Future<String?> getToken() async => await storage.read(key: 'token');
 
-  // // تجهيز الروأس (Headers) لكل طلب
+  // تجهيز الروأس لكل طلب
   Future<Map<String, String>> _getHeaders({bool auth = true}) async {
     final headers = <String, String>{
       'Accept': 'application/json',
@@ -29,14 +31,14 @@ class ApiService {
     return headers;
   }
 
-  // // دالة GET لجلب البيانات (مثل الأقسام أو المنتجات)
+  //  جلب البيانات
   Future<Either<StateRequest, Map<String, dynamic>>> get(
     String endpoint, {
     bool auth = true,
   }) async {
     try {
       if (!await checkInternet()) {
-        return const Left(StateRequest.offlinefailure);
+        return const Left(StateRequest.offlineFailure);
       }
       final url = Uri.parse('$baseUrl$endpoint');
       final headers = await _getHeaders(auth: auth);
@@ -44,11 +46,11 @@ class ApiService {
 
       return _handleResponse(response);
     } catch (_) {
-      return const Left(StateRequest.serverfailure);
+      return const Left(StateRequest.serverFailure);
     }
   }
 
-  // // دالة POST لإرسال بيانات جديدة (مثل إضافة منتج للسلة)
+  // إرسال بيانات جديدة
   Future<Either<StateRequest, Map<String, dynamic>>> post(
     String endpoint,
     Map<String, dynamic> body, {
@@ -56,7 +58,7 @@ class ApiService {
   }) async {
     try {
       if (!await checkInternet()) {
-        return const Left(StateRequest.offlinefailure);
+        return const Left(StateRequest.offlineFailure);
       }
       final url = Uri.parse('$baseUrl$endpoint');
       final headers = await _getHeaders(auth: auth);
@@ -68,11 +70,11 @@ class ApiService {
 
       return _handleResponse(response);
     } catch (e) {
-      return const Left(StateRequest.serverfailure);
+      return const Left(StateRequest.serverFailure);
     }
   }
 
-  // // دالة PUT لتحديث بيانات موجودة (مثل تعديل عنوان)
+  // تحديث بيانات موجودة
   Future<Either<StateRequest, Map<String, dynamic>>> put(
     String endpoint,
     Map<String, dynamic> body, {
@@ -80,7 +82,7 @@ class ApiService {
   }) async {
     try {
       if (!await checkInternet()) {
-        return const Left(StateRequest.offlinefailure);
+        return const Left(StateRequest.offlineFailure);
       }
       final url = Uri.parse('$baseUrl$endpoint');
       final headers = await _getHeaders(auth: auth);
@@ -91,33 +93,31 @@ class ApiService {
       );
       return _handleResponse(response);
     } catch (_) {
-      return const Left(StateRequest.serverfailure);
+      return const Left(StateRequest.serverFailure);
     }
   }
 
-  // // دالة DELETE لحذف بيانات (مثل حذف منتج من السلة أو المفضلة)
+  //   حذف بيانات
   Future<Either<StateRequest, Map<String, dynamic>>> delete(
     String endpoint, {
     bool auth = true,
   }) async {
     try {
       if (!await checkInternet()) {
-        return const Left(StateRequest.offlinefailure);
+        return const Left(StateRequest.offlineFailure);
       }
       final url = Uri.parse('$baseUrl$endpoint');
       final headers = await _getHeaders(auth: auth);
       final response = await http.delete(url, headers: headers);
       return _handleResponse(response);
     } catch (_) {
-      return const Left(StateRequest.serverfailure);
+      return const Left(StateRequest.serverFailure);
     }
   }
 
-  // // معالجة الرد القادم من السيرفر وتحويله إلى Either
   Either<StateRequest, Map<String, dynamic>> _handleResponse(
     http.Response response,
   ) {
-    // // طباعة الرد للتصحيح أثناء التطوير
     print("API Response [${response.statusCode}]: ${response.body}");
 
     final code = response.statusCode;
@@ -128,13 +128,11 @@ class ApiService {
       }
       return const Left(StateRequest.noData);
     } else if (code == 401) {
-      return const Left(
-        StateRequest.serverfailure,
-      ); // // يمكن تخصيصها لخطأ المصادقة
+      //  خطأ المصادقة
+      return const Left(StateRequest.serverFailure);
     } else if (code == 404) {
-      return const Left(
-        StateRequest.serverfailure,
-      ); // // لم يتم العثور على الصفحة
+      //  لم يتم العثور على الصفحة
+      return const Left(StateRequest.serverFailure);
     }
 
     return const Left(StateRequest.failure);

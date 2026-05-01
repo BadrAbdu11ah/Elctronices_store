@@ -7,13 +7,13 @@ class AddressData {
   AddressData(this.api);
 
   // 1. جلب كافة العناوين (استخدام GET)
-  Future getData() async {
+  Future getAddresses() async {
     var response = await api.get(ApiEndpoints.addressView);
     return response.fold((l) => l, (r) => r);
   }
 
   // 2. إضافة عنوان جديد (استخدام POST)
-  Future addData(
+  Future addAddress(
     String name,
     String city,
     String street,
@@ -32,8 +32,8 @@ class AddressData {
     return response.fold((l) => l, (r) => r);
   }
 
-  // 3. تعديل عنوان موجود (استخدام PUT وتمرير الـ ID في الرابط)
-  Future editData(
+  // 3. تعديل عنوان موجود
+  Future editAddress(
     int addressId,
     String name,
     String city,
@@ -53,8 +53,8 @@ class AddressData {
     return response.fold((l) => l, (r) => r);
   }
 
-  // 4. حذف عنوان (استخدام DELETE وتمرير الـ ID في الرابط)
-  Future removeData(int addressId) async {
+  // 4. حذف عنوان
+  Future removeAddress(int addressId) async {
     var response = await api.delete(ApiEndpoints.addressRemove(addressId));
     return response.fold((l) => l, (r) => r);
   }

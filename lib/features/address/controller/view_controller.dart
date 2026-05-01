@@ -18,32 +18,24 @@ abstract class AddressViewController extends GetxController {
   List<AddressModel> addresses = [];
 
   // Methods
-  void goToAddressAdd();
-  void getData();
+  void getAddresses();
   void deleteAddress(int addressid);
-  void editAddress();
+  void goToEditAddress();
+  void goToAddressAdd();
 }
 
 class AddressViewControllerImp extends AddressViewController {
   @override
-  void deleteAddress(addressid) {
-    addressData.removeData(addressid.toString());
-    addresses.removeWhere((e) => e.addressesId == addressid);
-    update();
+  void onInit() {
+    super.onInit();
+    getAddresses();
   }
 
   @override
-  void editAddress() {
-    Get.toNamed(MyPages.addressEdit);
-  }
-
-  @override
-  void getData() async {
+  void getAddresses() async {
     stateRequest = StateRequest.loading;
     update();
-    var response = await addressData.getData(
-      myService.sharedPreferences.getString("id")!,
-    );
+    var response = await addressData.getAddresses();
     stateRequest = handlingData(response);
     if (stateRequest != StateRequest.success) {
       update();
@@ -59,13 +51,19 @@ class AddressViewControllerImp extends AddressViewController {
   }
 
   @override
-  void goToAddressAdd() {
-    Get.toNamed(MyPages.addressAdd);
+  void deleteAddress(addressid) {
+    addressData.removeData(addressid.toString());
+    addresses.removeWhere((e) => e.addressesId == addressid);
+    update();
   }
 
   @override
-  void onInit() {
-    super.onInit();
-    getData();
+  void goToEditAddress() {
+    Get.toNamed(MyPages.addressEdit);
+  }
+
+  @override
+  void goToAddressAdd() {
+    Get.toNamed(MyPages.addressAdd);
   }
 }
