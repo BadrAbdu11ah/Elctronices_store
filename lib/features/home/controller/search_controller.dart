@@ -1,6 +1,5 @@
 import 'package:electronics_store/core/class/state_request.dart';
 import 'package:electronics_store/core/constant/my_pages.dart';
-import 'package:electronics_store/core/function/handing_data_controller.dart';
 import 'package:electronics_store/features/home/data/home_data.dart';
 import 'package:electronics_store/data/model/items_model.dart';
 import 'package:flutter/material.dart';
@@ -29,6 +28,12 @@ abstract class SearchController extends GetxController {
 
 class SearchControllerImp extends SearchController {
   @override
+  void onInit() {
+    product = TextEditingController();
+    super.onInit();
+  }
+
+  @override
   void goToItemsDetails(itemsModel) {
     Get.toNamed(MyPages.itemsDetails, arguments: {"itemsmodel": itemsModel});
   }
@@ -37,20 +42,23 @@ class SearchControllerImp extends SearchController {
   Future searchData() async {
     stateRequest = StateRequest.loading;
     update();
+
     var response = await homeData.searchData(product.text);
-    stateRequest = handlingData(response);
-    if (stateRequest != StateRequest.success) {
-      update();
-      return;
-    }
-    if (response['status'] == "failure") {
-      update();
-      stateRequest = StateRequest.failure;
-      return;
-    }
-    listSearchData.clear();
-    List data = response['data'];
-    listSearchData.addAll(data.map((e) => ItemsModel.fromJson(e)));
+
+    response.fold(
+      (failure) {
+        stateRequest = failure;
+      },
+      (itemsList) {
+        listSearchData.clear();
+        if (itemsList.isEmpty) {
+          stateRequest = StateRequest.failure;
+        } else {
+          stateRequest = StateRequest.success;
+          listSearchData.addAll(itemsList);
+        }
+      },
+    );
     update();
   }
 
@@ -59,6 +67,7 @@ class SearchControllerImp extends SearchController {
     if (val.isEmpty) {
       stateRequest = StateRequest.none;
       isSearch = false;
+      listSearchData.clear();
       update();
     }
   }
@@ -66,9 +75,14 @@ class SearchControllerImp extends SearchController {
   @override
   void onSearchItems() {
     if (product.text.isNotEmpty) {
-      searchData();
       isSearch = true;
-      update();
+      searchData();
     }
+  }
+
+  @override
+  void dispose() {
+    product.dispose();
+    super.dispose();
   }
 }

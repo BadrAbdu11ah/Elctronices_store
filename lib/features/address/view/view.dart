@@ -1,3 +1,4 @@
+import 'package:electronics_store/core/class/state_request.dart';
 import 'package:electronics_store/features/address/controller/view_controller.dart';
 import 'package:electronics_store/core/class/handling_data_view.dart';
 import 'package:electronics_store/core/constant/my_color.dart';
@@ -27,25 +28,27 @@ class AddressView extends GetView<AddressViewControllerImp> {
         builder: (controller) {
           return HandlingDataView(
             state: controller.stateRequest,
-            child: Padding(
-              padding: EdgeInsets.all(15),
-              child: ListView.builder(
-                itemCount: controller.addresses.length,
-                itemBuilder: (BuildContext context, int i) {
-                  return CardAddress(
-                    addressModel: controller.addresses[i],
-                    onDelete: () {
-                      controller.deleteAddress(
-                        controller.addresses[i].addressesId!,
-                      );
-                    },
-                    onEdit: () {
-                      controller.goToEditAddress();
-                    },
-                  );
-                },
-              ),
-            ),
+            child: controller.stateRequest == StateRequest.noData
+                ? Center(child: Text("لا توجد عناوين"))
+                : Padding(
+                    padding: EdgeInsets.all(15),
+                    child: ListView.builder(
+                      itemCount: controller.addresses.length,
+                      itemBuilder: (BuildContext context, int i) {
+                        return CardAddress(
+                          addressModel: controller.addresses[i],
+                          onDelete: () {
+                            controller.deleteAddress(
+                              controller.addresses[i].addressesId!,
+                            );
+                          },
+                          onEdit: () {
+                            controller.goToEditAddress(controller.addresses[i]);
+                          },
+                        );
+                      },
+                    ),
+                  ),
           );
         },
       ),

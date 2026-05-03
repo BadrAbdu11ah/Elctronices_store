@@ -1,6 +1,5 @@
 import 'package:electronics_store/core/class/state_request.dart';
 import 'package:electronics_store/core/constant/my_pages.dart';
-import 'package:electronics_store/core/function/handing_data_controller.dart';
 import 'package:electronics_store/core/services/my_service.dart';
 import 'package:electronics_store/features/address/data/address_data.dart';
 import 'package:flutter/material.dart';
@@ -21,9 +20,6 @@ abstract class AddressAddDetailsController extends GetxController {
   late TextEditingController phone;
   late String lat;
   late String long;
-
-  // Data Lists
-  List data = [];
 
   // Methods
   void initialData();
@@ -58,33 +54,48 @@ class AddressAddDetailsControllerImp extends AddressAddDetailsController {
   }
 
   @override
-  void addData() async {
+  Future<void> addData() async {
+    // التحقق من صحة المدخلات في الواجهة أولاً
+    // if (formstate.currentState?.validate() != true) return;
+
+    // 1. تحديث الحالة إلى "جاري التحميل"
     stateRequest = StateRequest.loading;
     update();
-    var response = await addressData.addData(
-      myService.sharedPreferences.getString('id')!,
-      name.text,
-      city.text,
-      street.text,
-      lat,
-      long,
-      phone.text,
+
+    // 2. طلب البيانات من السيرفر (إرسال البيانات كـ Map)
+    var response = await addressData.addAddress({
+      "name": name.text,
+      "city": city.text,
+      "street": street.text,
+      "lat": lat.toString(),
+      "long": long.toString(),
+      "phone": phone.text,
+    });
+
+    // 3. فحص الرد (هل هو بيانات أم خطأ اتصال؟)
+    response.fold(
+      (failure) {
+        stateRequest = failure;
+        update();
+      },
+      (data) {
+        if (data['status'] == "failure") {
+          stateRequest = StateRequest.failure;
+          Get.defaultDialog(
+            title: "تنبيه",
+            middleText: data['message'] ?? "فشلت العملية",
+          );
+          update();
+          return;
+        }
+
+        // 4. في حالة النجاح
+        Get.defaultDialog(title: "نجاح", middleText: data['message']);
+        stateRequest = StateRequest.success;
+        Get.offAllNamed(MyPages.homeScreen);
+
+        update();
+      },
     );
-
-    stateRequest = handlingData(response);
-
-    if (stateRequest != StateRequest.success) {
-      update();
-      return;
-    }
-
-    if (response['status'] != "success") {
-      stateRequest = StateRequest.failure;
-      update();
-      return;
-    }
-
-    Get.offAllNamed(MyPages.homeScreen);
-    update();
   }
 }

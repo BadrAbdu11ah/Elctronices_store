@@ -18,8 +18,6 @@ class HandlingDataView extends StatelessWidget {
         return Center(child: Text("Offline Failure"));
       case StateRequest.serverFailure:
         return Center(child: Text("Server Failure"));
-      case StateRequest.noData:
-        return Center(child: Text("No Data"));
       case StateRequest.failure:
         return Center(child: Text("Failure"));
       default:

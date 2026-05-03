@@ -1,61 +1,52 @@
+import 'package:dartz/dartz.dart';
 import 'package:electronics_store/api_endpoints.dart';
+import 'package:electronics_store/core/class/state_request.dart';
 import 'package:electronics_store/core/services/api_service.dart';
+import 'package:electronics_store/data/model/address_model.dart';
 
 class AddressData {
   final ApiService api;
 
   AddressData(this.api);
 
-  // 1. جلب كافة العناوين (استخدام GET)
-  Future getAddresses() async {
+  // 1. جلب العناوين
+  Future<Either<StateRequest, List<AddressModel>>> getAddresses() async {
     var response = await api.get(ApiEndpoints.addressView);
-    return response.fold((l) => l, (r) => r);
+
+    return response.fold((failure) => Left(failure), (data) {
+      if (data['status'] == "failure") {
+        return Left(StateRequest.noData);
+      }
+
+      final List raw = data['data'] ?? [];
+
+      final addresses = raw
+          .map(
+            (address) => AddressModel.fromJson(address as Map<String, dynamic>),
+          )
+          .toList();
+
+      return Right(addresses);
+    });
   }
 
-  // 2. إضافة عنوان جديد (استخدام POST)
-  Future addAddress(
-    String name,
-    String city,
-    String street,
-    String lat,
-    String long,
-    String phone,
+  // 2. إضافة عنوان جديد
+  Future<Either<StateRequest, Map>> addAddress(
+    Map<String, dynamic> data,
   ) async {
-    var response = await api.post(ApiEndpoints.addressAdd, {
-      "name": name,
-      "city": city,
-      "street": street,
-      "lat": lat,
-      "long": long,
-      "phone": phone,
-    });
-    return response.fold((l) => l, (r) => r);
+    return await api.post(ApiEndpoints.addressAdd, data);
   }
 
   // 3. تعديل عنوان موجود
-  Future editAddress(
+  Future<Either<StateRequest, Map>> editAddress(
     int addressId,
-    String name,
-    String city,
-    String street,
-    String lat,
-    String long,
-    String phone,
+    Map<String, dynamic> data,
   ) async {
-    var response = await api.put(ApiEndpoints.addressEdit(addressId), {
-      'name': name,
-      'city': city,
-      'street': street,
-      'lat': lat,
-      'long': long,
-      'phone': phone,
-    });
-    return response.fold((l) => l, (r) => r);
+    return await api.put(ApiEndpoints.addressEdit(addressId), data);
   }
 
   // 4. حذف عنوان
-  Future removeAddress(int addressId) async {
-    var response = await api.delete(ApiEndpoints.addressRemove(addressId));
-    return response.fold((l) => l, (r) => r);
+  Future<Either<StateRequest, Map>> removeAddress(int addressId) async {
+    return await api.delete(ApiEndpoints.addressRemove(addressId));
   }
 }

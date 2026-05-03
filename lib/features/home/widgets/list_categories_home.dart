@@ -62,7 +62,7 @@ class CategoriesHomeModel extends GetView<HomePageControllerImp> {
             ),
           ),
           Text(
-            "${translateDatabase(categoriesModel.categoriesName, categoriesModel.categoriesNameAr)}",
+            "${translateDatabase(categoriesModel.categoriesName!, categoriesModel.categoriesNameAr!)}",
           ),
         ],
       ),

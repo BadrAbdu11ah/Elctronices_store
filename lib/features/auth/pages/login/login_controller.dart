@@ -34,6 +34,14 @@ abstract class LoginController extends GetxController {
 
 class LoginControllerImp extends LoginController {
   @override
+  void onInit() async {
+    email = TextEditingController();
+    password = TextEditingController();
+    await initFirebaseStuff();
+    super.onInit();
+  }
+
+  @override
   Future<void> login() async {
     if (formstate.currentState?.validate() != true) return;
 
@@ -106,14 +114,6 @@ class LoginControllerImp extends LoginController {
   @override
   goToSignUp() {
     Get.toNamed(MyPages.signUp);
-  }
-
-  @override
-  void onInit() async {
-    email = TextEditingController();
-    password = TextEditingController();
-    await initFirebaseStuff();
-    super.onInit();
   }
 
   @override

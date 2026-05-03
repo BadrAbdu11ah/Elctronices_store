@@ -8,6 +8,7 @@ class CustomAppBar extends StatelessWidget {
   final void Function()? onFavorite;
   final bool isFavorite;
   final void Function(String) onChanged;
+
   const CustomAppBar({
     super.key,
     required this.product,
@@ -22,57 +23,62 @@ class CustomAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(vertical: 10),
+      margin: const EdgeInsets.symmetric(vertical: 10),
       child: Row(
         children: [
           Expanded(
             child: TextFormField(
               controller: product,
               onChanged: onChanged,
+              textInputAction: TextInputAction.search,
+              onFieldSubmitted: (value) => onSearch(),
               decoration: InputDecoration(
-                border: OutlineInputBorder(
-                  borderSide: BorderSide.none,
-                  borderRadius: BorderRadius.circular(10),
-                ),
                 hintText: title,
-                hintStyle: TextStyle(fontSize: 18),
+                hintStyle: const TextStyle(fontSize: 18),
                 prefixIcon: IconButton(
                   onPressed: onSearch,
                   icon: Icon(Icons.search_outlined, color: Colors.grey[600]),
+                ),
+                border: OutlineInputBorder(
+                  borderSide: BorderSide.none,
+                  borderRadius: BorderRadius.circular(10),
                 ),
                 filled: true,
                 fillColor: Colors.grey[200],
               ),
             ),
           ),
-          SizedBox(width: 10),
-          Container(
-            width: 55,
-            height: 55,
-            decoration: BoxDecoration(
-              color: Colors.grey[200],
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: IconButton(
-              onPressed: onOrder,
-              icon: Icon(Icons.shopping_cart_outlined, color: Colors.grey[600]),
-            ),
+          const SizedBox(width: 10),
+          _buildAppBarButton(
+            onPressed: onOrder,
+            icon: Icons.shopping_cart_outlined,
           ),
-          SizedBox(width: 10),
-          if (isFavorite)
-            Container(
-              width: 55,
-              height: 55,
-              decoration: BoxDecoration(
-                color: Colors.grey[200],
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: IconButton(
-                onPressed: onFavorite,
-                icon: Icon(Icons.favorite_outline, color: Colors.grey[600]),
-              ),
+          if (isFavorite) ...[
+            const SizedBox(width: 10),
+            _buildAppBarButton(
+              onPressed: onFavorite,
+              icon: Icons.favorite_outline,
             ),
+          ],
         ],
+      ),
+    );
+  }
+
+  Widget _buildAppBarButton({
+    required void Function()? onPressed,
+    required IconData icon,
+  }) {
+    return Container(
+      width: 55,
+      height: 55,
+      decoration: BoxDecoration(
+        color: Colors.grey[200],
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: IconButton(
+        onPressed: onPressed,
+        icon: Icon(icon, color: Colors.grey[600]),
       ),
     );
   }

@@ -62,7 +62,7 @@ class ItemsHomeModel extends GetView<HomePageControllerImp> {
             left: controller.lang == "en" ? 25 : null,
             right: controller.lang == "ar" ? 25 : null,
             child: Text(
-              "${translateDatabase(itemsModel.itemsName, itemsModel.itemsNameAr)}",
+              "${translateDatabase(itemsModel.itemsName!, itemsModel.itemsNameAr!)}",
               style: TextStyle(
                 color: MyColor.themeWhiteColor,
                 fontWeight: FontWeight.bold,

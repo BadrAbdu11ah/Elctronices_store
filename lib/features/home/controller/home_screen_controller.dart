@@ -1,7 +1,8 @@
 import 'package:electronics_store/core/class/state_request.dart';
 import 'package:electronics_store/core/constant/my_pages.dart';
-import 'package:electronics_store/core/function/handing_data_controller.dart';
 import 'package:electronics_store/core/services/my_service.dart';
+import 'package:electronics_store/data/model/categories_model.dart';
+import 'package:electronics_store/data/model/items_model.dart';
 import 'package:electronics_store/features/home/data/home_data.dart';
 import 'package:electronics_store/features/home/view/home_page.dart';
 import 'package:electronics_store/features/home/view/settings_page.dart';
@@ -71,18 +72,32 @@ class HomeScreenControllerImp extends HomeScreenController {
   }
 
   @override
-  Future getData() async {
+  Future<void> getData() async {
+    // 1. تحديث الحالة إلى "جاري التحميل"
     stateRequest = StateRequest.loading;
     update();
+
+    // 2. طلب البيانات من ملف الـ Data
     var response = await homeData.getData();
-    stateRequest = handlingData(response);
-    if (stateRequest != StateRequest.success) {
-      update();
-      return;
-    }
-    categories.addAll(response['categories']);
-    items = response['items'] ?? [];
-    update();
+
+    // 3. فحص الرد باستخدام fold
+    response.fold(
+      (failure) {
+        stateRequest = failure;
+        update();
+      },
+      (data) {
+        stateRequest = StateRequest.success;
+
+        categories.clear();
+        categories.addAll(data['categories'] as List<CategoriesModel>);
+
+        items.clear();
+        items.addAll(data['items'] as List<ItemsModel>);
+
+        update();
+      },
+    );
   }
 
   @override

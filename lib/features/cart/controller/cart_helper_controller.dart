@@ -1,4 +1,3 @@
-import 'package:electronics_store/features/cart/controller/cart_controller.dart';
 import 'package:electronics_store/core/class/state_request.dart';
 import 'package:electronics_store/core/services/my_service.dart';
 import 'package:electronics_store/features/cart/data/cart_page_data.dart';
@@ -11,7 +10,6 @@ abstract class CartHelperController extends GetxController {
   // Dependencies
   final MyService myService = Get.find();
   final CartPageData cartData = CartPageData(Get.find());
-  final CartControllerImp cartController = Get.find();
 
   // State Management
   StateRequest stateRequest = StateRequest.none;
