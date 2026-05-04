@@ -1,10 +1,10 @@
 import 'package:electronics_store/core/class/state_request.dart';
 import 'package:electronics_store/core/constant/my_pages.dart';
-import 'package:electronics_store/core/function/handing_data_controller.dart';
 import 'package:electronics_store/core/services/my_service.dart';
 import 'package:electronics_store/features/address/data/address_data.dart';
 import 'package:electronics_store/features/check_out/data/checkout_data.dart';
 import 'package:electronics_store/data/model/address_model.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 abstract class CheckOutController extends GetxController {
@@ -29,7 +29,7 @@ abstract class CheckOutController extends GetxController {
   List<AddressModel> addressModel = [];
 
   // Methods
-  void getAddressData();
+  void getAddresses();
   void choosePymentMethod(String val);
   void chooseDeliveryType(String val);
   void chooseShippingAddress(String val);
@@ -42,7 +42,7 @@ class CheckOutControllerImp extends CheckOutController {
     super.onInit();
     couponsID = Get.arguments['couponsid'] ?? "0";
     priceOrders = Get.arguments['priceorders'].toString();
-    getAddressData();
+    getAddresses();
   }
 
   @override
@@ -64,79 +64,97 @@ class CheckOutControllerImp extends CheckOutController {
   }
 
   @override
-  void getAddressData() async {
+  void getAddresses() async {
     stateRequest = StateRequest.loading;
     update();
-    var response = await addressData.getData(
-      myService.sharedPreferences.getString("id")!,
+
+    var response = await addressData.getAddresses();
+
+    response.fold(
+      (failure) {
+        stateRequest = failure;
+        update();
+      },
+      (data) {
+        stateRequest = StateRequest.success;
+        addressModel.clear();
+        addressModel.addAll(data);
+        update();
+      },
     );
-    stateRequest = handlingData(response);
-    if (stateRequest != StateRequest.success) {
-      update();
-      return;
-    }
-    if (response['status'] != "success") {
-      update();
-      return;
-    }
-    print("====================== response controller: $response");
-    List data = response['data'];
-    addressModel.addAll(data.map((e) => AddressModel.fromJson(e)));
-    update();
   }
 
   @override
   void checkout() async {
+    // 1. التحقق من المدخلات (Validation)
     if (paymentMethod == null) {
-      Get.snackbar("Erorr", "Select Payment Method");
+      Get.snackbar("تنبيه", "يرجى اختيار طريقة الدفع");
       return;
     }
     if (deliveryType == null) {
-      Get.snackbar("Erorr", "Select Delivery Type");
+      Get.snackbar("تنبيه", "يرجى اختيار نوع الاستلام");
       return;
     }
     if (deliveryType == "0" && addressID == null) {
-      Get.snackbar("Erorr", "Select Shipping Address");
+      Get.snackbar("تنبيه", "يرجى اختيار عنوان التوصيل");
       return;
     }
 
+    // 2. تجهيز البيانات
     Map<String, dynamic> data = {
-      'usersid': myService.sharedPreferences.getString("id"), // 1
-      'addressesid': addressID ?? "0", // 0
-      'type': deliveryType, // 1
-      'pricedelivery': "20", // 20
-      'price': priceOrders, // 7000
-      'couponsid': couponsID, // 0
-      'paymentmethod': paymentMethod, // 0
+      'addressesid': addressID ?? "0",
+      'type': deliveryType,
+      'pricedelivery': "20",
+      'price': priceOrders,
+      'couponsid': couponsID,
+      'paymentmethod': paymentMethod,
     };
+
     stateRequest = StateRequest.loading;
     update();
-    var response = await checkoutData.getData(data);
-    print("====================== response controller: $response");
-    stateRequest = handlingData(response);
-    print("============ stateRequest: $stateRequest");
-    if (stateRequest != StateRequest.success) {
-      stateRequest = StateRequest.none;
-      Get.snackbar("Erorr", "erorr in server try again");
-      update();
-      return;
-    }
-    if (response['message'] == "coupon") {
-      stateRequest = StateRequest.none;
-      Get.snackbar("Erorr", "The coupon is not valid, try again");
-      Get.offAllNamed(MyPages.homeScreen);
-      update();
-      return;
-    }
-    if (response['status'] != "success") {
-      stateRequest = StateRequest.none;
-      Get.snackbar("Erorr", "try again");
-      update();
-      return;
-    }
-    Get.snackbar("Alert", "The order was completed successfully");
 
-    Get.offAllNamed(MyPages.homeScreen);
-    update();
+    // 3. استدعاء طبقة البيانات
+    var response = await checkoutData.checkout(data);
+
+    // 4. معالجة الرد
+    response.fold(
+      (failure) {
+        stateRequest = failure;
+        Get.snackbar("خطأ", "فشل الاتصال بالسيرفر، حاول مجدداً");
+        update();
+      },
+      (data) {
+        // حالة فشل الكوبون
+        if (data['status'] == "failure" &&
+            data['message'] == "الكوبون لم يعد صالحاً") {
+          stateRequest = StateRequest.none;
+          Get.snackbar("خطأ في الكوبون", data['message']);
+          // Get.offAllNamed(MyPages.cart);
+          update();
+          return;
+        }
+
+        // حالة فشل عامة
+        if (data['status'] != "success") {
+          stateRequest = StateRequest.none;
+          Get.snackbar("خطأ", data['message'] ?? "حدث خطأ ما، حاول لاحقاً");
+          update();
+          return;
+        }
+
+        // حالة النجاح الكامل
+        stateRequest = StateRequest.success;
+        Get.offAllNamed(MyPages.homeScreen);
+
+        // عرض رسالة النجاح
+        Get.snackbar(
+          "تم بنجاح",
+          data['message'],
+          backgroundColor: Colors.green,
+          colorText: Colors.white,
+          duration: const Duration(seconds: 4),
+        );
+      },
+    );
   }
 }

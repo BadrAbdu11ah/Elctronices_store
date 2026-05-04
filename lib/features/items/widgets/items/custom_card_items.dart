@@ -1,5 +1,4 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:electronics_store/features/favorite/controller/favorite_controller.dart';
 import 'package:electronics_store/features/items/controller/items_controller.dart';
 import 'package:electronics_store/core/constant/my_color.dart';
 import 'package:electronics_store/core/constant/my_image_asset.dart';
@@ -53,8 +52,8 @@ class CustomCardItems extends GetView<ItemsControllerImp> {
                   SizedBox(height: 10),
                   Text(
                     translateDatabase(
-                      itemsModel.itemsName,
-                      itemsModel.itemsNameAr,
+                      itemsModel.itemsName!,
+                      itemsModel.itemsNameAr!,
                     ),
                     style: TextStyle(
                       fontSize: controller.lang == "ar" ? 15 : 16,
@@ -88,22 +87,21 @@ class CustomCardItems extends GetView<ItemsControllerImp> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       itemsModel.itemsDiscount! > 0
-                          ? Row(
+                          ? Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  "${itemsModel.itemsPrice} \$",
+                                  "${itemsModel.itemsPrice} \$ (${(itemsModel.itemsPrice! * 3.75).toStringAsFixed(2)} ر.س)",
                                   style: TextStyle(
-                                    fontSize: 12,
+                                    fontSize: 10,
                                     color: MyColor.priceColor,
-                                    fontWeight: FontWeight.bold,
                                     decoration: TextDecoration.lineThrough,
                                   ),
                                 ),
-                                SizedBox(width: 5),
                                 Text(
-                                  "${itemsModel.discountedPrice} \$",
+                                  "${itemsModel.discountedPrice} \$ (${(itemsModel.discountedPrice! * 3.75).toStringAsFixed(2)} ر.س)",
                                   style: TextStyle(
-                                    fontSize: 16,
+                                    fontSize: 14,
                                     color: MyColor.priceColor,
                                     fontWeight: FontWeight.bold,
                                   ),
@@ -111,46 +109,31 @@ class CustomCardItems extends GetView<ItemsControllerImp> {
                               ],
                             )
                           : Text(
-                              "${itemsModel.itemsPrice} \$",
+                              "${itemsModel.itemsPrice} \$ (${(itemsModel.itemsPrice! * 3.75).toStringAsFixed(2)} ر.س)",
                               style: TextStyle(
-                                fontSize: 18,
+                                fontSize: 15,
                                 color: MyColor.priceColor,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
-                      GetBuilder<FavoriteControllerImp>(
+                      GetBuilder<ItemsControllerImp>(
                         builder: (controller) {
                           return IconButton(
                             onPressed: () {
+                              // إذا كان 1 احذفه، وإذا كان 0 أضفه
                               if (controller.isFavorite[itemsModel.itemsId] ==
-                                  "1") {
-                                controller.removeFavorite(
-                                  itemsModel.itemsId.toString(),
-                                );
-                                controller.setFavorite(
-                                  itemsModel.itemsId!,
-                                  "0",
-                                );
+                                  1) {
+                                controller.removeFavorite(itemsModel.itemsId!);
                               } else {
-                                controller.addFavorite(
-                                  itemsModel.itemsId.toString(),
-                                );
-                                controller.setFavorite(
-                                  itemsModel.itemsId!,
-                                  "1",
-                                );
+                                controller.addFavorite(itemsModel.itemsId!);
                               }
                             },
-                            icon:
-                                controller.isFavorite[itemsModel.itemsId] == "1"
-                                ? Icon(
-                                    Icons.favorite,
-                                    color: MyColor.themeBlackColor,
-                                  )
-                                : Icon(
-                                    Icons.favorite_outline,
-                                    color: MyColor.themeBlackColor,
-                                  ),
+                            icon: Icon(
+                              controller.isFavorite[itemsModel.itemsId] == 1
+                                  ? Icons.favorite
+                                  : Icons.favorite_outline,
+                              color: MyColor.themeBlackColor,
+                            ),
                           );
                         },
                       ),

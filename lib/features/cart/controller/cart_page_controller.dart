@@ -1,18 +1,16 @@
 import 'package:electronics_store/features/cart/controller/cart_helper_controller.dart';
 import 'package:electronics_store/core/class/state_request.dart';
 import 'package:electronics_store/core/constant/my_pages.dart';
-import 'package:electronics_store/core/function/handing_data_controller.dart';
 import 'package:electronics_store/data/model/cart_model.dart';
-import 'package:electronics_store/data/model/coupon_model.dart';
 import 'package:electronics_store/data/model/items_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 abstract class CartPageController extends CartHelperControllerImp {
   // methods
-  Future<void> getData();
-  Future<void> addCount(int index, String itemsid);
-  Future<void> removeCount(int index, String itemsid);
+  Future<void> getCart();
+  Future<void> addCart(int index, String itemsid);
+  Future<void> removeCart(int index, String itemsid);
   void checkCoupon(String couponsName);
   void deleteItem(int index);
   void goToItemsDetails(ItemsModel itemsModel);
@@ -25,7 +23,7 @@ class CartPageControllerImp extends CartPageController {
     lang = myService.sharedPreferences.getString('lang');
     product = TextEditingController();
     coupon = TextEditingController();
-    getData();
+    getCart();
     super.onInit();
   }
 
@@ -37,120 +35,128 @@ class CartPageControllerImp extends CartPageController {
   }
 
   @override
-  Future<void> getData() async {
-    resetCart();
+  Future<void> getCart() async {
     stateRequest = StateRequest.loading;
     update();
 
-    final response = await cartData.viewCart(
-      myService.sharedPreferences.getString("id")!,
+    var response = await cartData.viewCart();
+
+    response.fold(
+      (failure) {
+        stateRequest = failure;
+        update();
+      },
+      (data) {
+        stateRequest = StateRequest.success;
+        resetCart();
+
+        items.addAll(data['items'] as List<CartModel>);
+
+        // تعبئة مصفوفات التحكم بناءً على البيانات المستلمة
+        countItem.addAll(items.map((e) => e.countItems ?? 0));
+        totalItemPrice.addAll(
+          items.map((e) => double.tryParse(e.totalItemPrice.toString()) ?? 0.0),
+        );
+        isUpdating.addAll(List.filled(items.length, false));
+
+        // تحديث الإجماليات
+        originalPrice = data['totalprice'];
+        subtotalPrice = originalPrice;
+        countAll = data['countall'];
+
+        recalculateTotals();
+        update();
+      },
     );
-
-    stateRequest = handlingData(response);
-
-    if (stateRequest != StateRequest.success) {
-      update();
-      return;
-    }
-    if (response['status'] != "success") {
-      stateRequest = StateRequest.failure;
-      update();
-      return;
-    }
-    final List data = response['data'] ?? [];
-
-    items.addAll(data.map((e) => CartModel.fromJson(e)));
-
-    countItem.addAll(items.map((e) => e.countItems ?? 0));
-
-    totalItemPrice.addAll(items.map((e) => e.totalItemPrice ?? 0));
-
-    isUpdating.addAll(List.filled(items.length, false));
-
-    originalPrice = double.tryParse(response['totalprice'].toString()) ?? 0.0;
-    price = originalPrice;
-    countAll = int.tryParse(response['countall'].toString()) ?? 0;
-    recalculateTotals();
-
-    update();
   }
 
   @override
-  Future<void> addCount(int index, String itemId) async {
-    // زيادة عدد منتج
-    if (isUpdating[index]) return; // منع التحديث المتكرر
-
-    isUpdating[index] = true; // قفل العنصر
-    applyLocalChange(index, 1); // تحديث فوري للواجهة
-    update();
-
-    final success = await cartController.add(itemId); // إرسال الطلب للسيرفر
-    if (!success) {
-      applyLocalChange(index, -1); // rollback في حال الفشل
-    }
-
-    isUpdating[index] = false; // فتح القفل
-    update(); // تحديث الواجهة
-  }
-
-  @override
-  Future<void> removeCount(int index, String itemId) async {
-    print("====== index: $index");
-
+  Future<void> addCart(int index, String itemId) async {
     if (isUpdating[index]) return;
 
-    if (countItem[index] <= 0) {
-      return;
-    }
+    isUpdating[index] = true;
+    applyLocalChange(index, 1);
+    update();
+
+    var response = await cartData.addCart(int.parse(itemId));
+
+    response.fold(
+      (failure) {
+        applyLocalChange(index, -1);
+        isUpdating[index] = false;
+        update();
+      },
+      (success) {
+        isUpdating[index] = false;
+        update();
+      },
+    );
+  }
+
+  @override
+  Future<void> removeCart(int index, String itemId) async {
+    if (isUpdating[index] || countItem[index] <= 0) return;
 
     isUpdating[index] = true;
     applyLocalChange(index, -1);
     update();
 
-    final success = await cartController.remove(itemId);
+    var response = await cartData.removeCart(int.parse(itemId));
 
-    if (!success) {
-      applyLocalChange(index, 1);
-    }
-    if (countItem[index] <= 0) {
-      items.removeAt(index);
-      isUpdating.removeAt(index);
-      countItem.removeAt(index);
-      totalItemPrice.removeAt(index);
-    }
+    response.fold(
+      (failure) {
+        applyLocalChange(index, 1);
+        isUpdating[index] = false;
+        update();
+      },
+      (success) {
+        // حذف العنصر نهائياً من الواجهة إذا وصل الصفر
+        if (countItem[index] <= 0) {
+          _deleteItem(index);
+        } else {
+          isUpdating[index] = false;
+        }
+        update();
+      },
+    );
+  }
 
-    if (index < isUpdating.length) {
-      isUpdating[index] = false;
-    }
-    update();
+  void _deleteItem(int index) {
+    items.removeAt(index);
+    isUpdating.removeAt(index);
+    countItem.removeAt(index);
+    totalItemPrice.removeAt(index);
   }
 
   @override
   void checkCoupon(String couponsname) async {
     if (coupon.text.isEmpty) return;
+
     stateRequest = StateRequest.loading;
     update();
 
-    final response = await cartData.checkCoupon(couponsname);
-    if (response['status'] == "failure") {
-      discount = 0;
-      couponsName = null;
-      couponsName = null;
-      Get.snackbar("Wroning", "The coupon is invalid");
-      stateRequest = StateRequest.none;
-      update();
-      return;
-    }
-    Map<String, dynamic> responseData = response['data'];
-    couponModel = CouponModel.fromJson(responseData);
-    couponsName = couponModel.couponsName!;
-    couponsid = couponModel.couponsId.toString();
+    var response = await cartData.checkCoupon(couponsname);
 
-    discount = couponModel.couponsDiscount!;
+    response.fold(
+      (failure) {
+        discount = 0;
+        couponsName = null;
+        couponsid = null;
+        Get.snackbar("تنبيه", "الكوبون غير صالح أو انتهت صلاحيته");
+        stateRequest = StateRequest.none;
+        update();
+      },
+      (couponModelData) {
+        stateRequest = StateRequest.success;
+        couponModel = couponModelData;
+        couponsName = couponModel.couponsName;
+        couponsid = couponModel.couponsId.toString();
+        discount = couponModel.couponsDiscount ?? 0;
 
-    applyCoupon();
-    stateRequest = StateRequest.success;
-    update();
+        applyCoupon();
+        update();
+      },
+    );
   }
 
   @override
@@ -160,22 +166,19 @@ class CartPageControllerImp extends CartPageController {
 
   @override
   void goToCheckOut() {
-    if (Get.isSnackbarOpen) return;
-
-    if (items.isEmpty) {
-      Get.snackbar("تنبيه", "لا توجد عناصر");
-      return;
-    }
+    if (Get.isSnackbarOpen || items.isEmpty) return;
 
     Get.toNamed(
       MyPages.checkOut,
       arguments: {
-        'couponsid': couponsid,
-        'priceorders': originalPrice.toString(),
+        'couponsid': couponsid ?? "0",
+        'priceorders': subtotalPrice.toString(),
       },
     );
   }
 
   @override
-  void deleteItem(int index) {}
+  void deleteItem(int index) {
+    // منطق الحذف الكامل للمنتج (اختياري)
+  }
 }

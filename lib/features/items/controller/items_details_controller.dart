@@ -1,7 +1,5 @@
-import 'package:electronics_store/features/cart/controller/cart_controller.dart';
 import 'package:electronics_store/core/class/state_request.dart';
 import 'package:electronics_store/core/constant/my_pages.dart';
-import 'package:electronics_store/core/function/handing_data_controller.dart';
 import 'package:electronics_store/core/services/my_service.dart';
 import 'package:electronics_store/features/cart/data/cart_data.dart';
 import 'package:electronics_store/data/model/items_model.dart';
@@ -9,7 +7,6 @@ import 'package:get/get.dart';
 
 abstract class ItemsDetailsController extends GetxController {
   // Dependencies
-  CartControllerImp cartControllerImp = Get.find();
   MyService myService = Get.find();
   CartData cartData = CartData(Get.find());
 
@@ -20,6 +17,7 @@ abstract class ItemsDetailsController extends GetxController {
   late ItemsModel itemsModel;
   int count = 0;
   List<String> color = [];
+  bool isUpdating = false;
 
   // Selection Options
   List subItems = [
@@ -30,9 +28,9 @@ abstract class ItemsDetailsController extends GetxController {
 
   // Methods
   void selectedColor(int id);
-  void getData();
-  void addCart();
-  void removeCart();
+  void getCountCart();
+  Future<void> addCart();
+  Future<void> removeCart();
   void goToCart();
 }
 
@@ -40,30 +38,31 @@ class ItemsDetailsControllerImp extends ItemsDetailsController {
   @override
   void onInit() {
     itemsModel = Get.arguments["itemsmodel"];
-    getData();
+    getCountCart();
     super.onInit();
   }
 
   @override
-  void getData() async {
+  void getCountCart() async {
+    // 1. تحديث الحالة إلى جاري التحميل
     stateRequest = StateRequest.loading;
     update();
-    var response = await cartData.countCart(
-      myService.sharedPreferences.getString("id")!,
-      itemsModel.itemsId.toString(),
-    );
-    stateRequest = handlingData(response);
-    if (stateRequest != StateRequest.success) {
-      update();
-      return;
-    }
-    if (response['status'] != "success") {
-      update();
-      return;
-    }
 
-    count = response['count'] ?? 0;
-    update();
+    // 2. طلب البيانات من طبقة الـ Data
+    var response = await cartData.getCountCart(itemsModel.itemsId!);
+
+    // 3. فحص الرد باستخدام fold
+    response.fold(
+      (failure) {
+        stateRequest = failure;
+        update();
+      },
+      (countResult) {
+        stateRequest = StateRequest.success;
+        count = countResult;
+        update();
+      },
+    );
   }
 
   @override
@@ -74,20 +73,73 @@ class ItemsDetailsControllerImp extends ItemsDetailsController {
   }
 
   @override
-  void addCart() {
-    cartControllerImp.add(itemsModel.itemsId.toString());
+  Future<void> addCart() async {
+    if (isUpdating) return;
+    isUpdating = true;
     count++;
-    Get.rawSnackbar(title: "تنبيه", message: "تم إضافة المنتج إلى السلة");
     update();
+    var response = await cartData.addCart(
+      int.parse(itemsModel.itemsId.toString()),
+    );
+
+    response.fold(
+      (failure) {
+        count--;
+        Get.rawSnackbar(title: "خطأ", message: "حدث خطأ أثناء إضافة المنتج");
+        update();
+        return;
+      },
+      (success) {
+        if (!success) {
+          count--;
+          Get.rawSnackbar(
+            title: "خطأ",
+            message: "فشل في إضافة المنتج إلى السلة",
+          );
+          update();
+          return;
+        }
+        Get.rawSnackbar(title: "نجاح", message: "تم إضافة المنتج إلى السلة");
+        update();
+      },
+    );
+    isUpdating = false;
   }
 
   @override
-  void removeCart() {
+  Future<void> removeCart() async {
+    if (isUpdating) return;
+    isUpdating = true;
     if (count > 0) {
       count--;
-      cartControllerImp.remove(itemsModel.itemsId.toString());
       update();
+      var response = await cartData.removeCart(
+        int.parse(itemsModel.itemsId.toString()),
+      );
+
+      response.fold(
+        (failure) {
+          count++;
+          Get.rawSnackbar(title: "خطأ", message: "حدث خطأ أثناء إضافة المنتج");
+          update();
+          return;
+        },
+        (success) {
+          if (!success) {
+            count++;
+            Get.rawSnackbar(
+              title: "خطأ",
+              message: "فشل في إضافة المنتج إلى السلة",
+            );
+            update();
+            return;
+          }
+          Get.rawSnackbar(title: "نجاح", message: "تم إزالة المنتج من السلة");
+          update();
+        },
+      );
     }
+    isUpdating = false;
   }
 
   @override

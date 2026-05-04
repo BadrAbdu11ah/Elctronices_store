@@ -45,27 +45,27 @@ class CardOrdersDetails extends GetView<OrdersDetailsControllerImp> {
                     ),
                   ],
                 ),
-                ...List.generate(controller.items.length, (i) {
+                ...List.generate(controller.cartItems.length, (i) {
                   return TableRow(
                     children: [
                       Text(
                         translateDatabase(
-                          controller.items[i].itemsModel!.itemsName,
-                          controller.items[i].itemsModel!.itemsNameAr,
+                          controller.cartItems[i].itemsModel!.itemsName!,
+                          controller.cartItems[i].itemsModel!.itemsNameAr!,
                         ),
                         textAlign: TextAlign.center,
                       ),
                       Text(
-                        "${controller.items[i].countItems}",
+                        "${controller.cartItems[i].countItems}",
                         textAlign: TextAlign.center,
                       ),
                       controller.lang == 'ar'
                           ? Text(
-                              "\$ ${controller.items[i].totalItemPrice}",
+                              "\$ ${controller.cartItems[i].totalItemPrice}",
                               textAlign: TextAlign.center,
                             )
                           : Text(
-                              "${controller.items[i].totalItemPrice} \$",
+                              "${controller.cartItems[i].totalItemPrice} \$",
                               textAlign: TextAlign.center,
                             ),
                     ],

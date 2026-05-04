@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 class CustomCardCart extends StatelessWidget {
   final String imageName;
   final String itemsName;
-  final int price;
+  final double price;
   final int count;
   final void Function() onAdd;
   final void Function() onRemove;
@@ -71,7 +71,7 @@ class CustomCardCart extends StatelessWidget {
                       icon: Icon(Icons.add_outlined),
                     ),
                   ),
-                  SizedBox(height: 25, child: Text("${count}")),
+                  SizedBox(height: 25, child: Text("$count")),
                   SizedBox(
                     height: 25,
                     child: IconButton(

@@ -1,7 +1,6 @@
 import 'package:electronics_store/core/class/state_request.dart';
-import 'package:electronics_store/core/function/handing_data_controller.dart';
 import 'package:electronics_store/core/services/my_service.dart';
-import 'package:electronics_store/features/orders/data/orders_details_data.dart';
+import 'package:electronics_store/features/orders/data/orders_data.dart';
 import 'package:electronics_store/data/model/address_model.dart';
 import 'package:electronics_store/data/model/cart_model.dart';
 import 'package:electronics_store/data/model/orders_model.dart';
@@ -11,7 +10,7 @@ import 'package:get/get.dart';
 abstract class OrdersDetailsController extends GetxController {
   // Dependencies
   MyService myService = Get.find();
-  OrdersDetailsData ordersDetailsData = OrdersDetailsData(Get.find());
+  OrdersData ordersData = OrdersData(Get.find());
 
   // State Management
   StateRequest stateRequest = StateRequest.none;
@@ -21,7 +20,7 @@ abstract class OrdersDetailsController extends GetxController {
 
   // Data Models & Lists
   late OrdersModel ordersModel;
-  List<CartModel> items = [];
+  List<CartModel> cartItems = [];
   AddressModel? addressModel;
 
   // Location Properties
@@ -90,32 +89,35 @@ class OrdersDetailsControllerImp extends OrdersDetailsController {
     stateRequest = StateRequest.loading;
     update();
 
-    var response = await ordersDetailsData.getData(
-      myService.sharedPreferences.getString("id")!,
-      ordersModel.ordersId.toString(),
-      ordersModel.ordersAddressesID.toString(),
+    // طلب البيانات من السيرفر باستخدام رقم الطلب
+    var response = await ordersData.getOrderDetails(ordersModel.ordersId!);
+
+    response.fold(
+      (failure) {
+        stateRequest = failure;
+        update();
+      },
+      (data) {
+        stateRequest = StateRequest.success;
+
+        // 1. تنظيف القوائم السابقة
+        cartItems.clear();
+
+        // 2. تعبئة قائمة المنتجات (تحويل JSON إلى CartModel)
+        List rawItems = data['data'] ?? [];
+        cartItems.addAll(rawItems.map((e) => CartModel.fromJson(e)));
+
+        // 3. تعبئة موديل العنوان إذا كان موجوداً
+        if (data['address'] != null) {
+          addressModel = AddressModel.fromJson(data['address']);
+        }
+
+        // 4. (إضافي) تحديث معلومات الطلب العامة إذا احتجت لها
+        ordersModel = OrdersModel.fromJson(data['order_info']);
+
+        update();
+      },
     );
-
-    stateRequest = handlingData(response);
-
-    if (stateRequest != StateRequest.success) {
-      update();
-      return;
-    }
-    if (response['status'] != "success") {
-      stateRequest = StateRequest.failure;
-      update();
-      return;
-    }
-    final List data = response['data'] ?? [];
-
-    items.addAll(data.map((e) => CartModel.fromJson(e)));
-
-    addressModel = response['address'] != null
-        ? AddressModel.fromJson(response['address'])
-        : null;
-    print("=========== AddressModel: ${addressModel}");
-    update();
   }
 }
 

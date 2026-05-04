@@ -60,7 +60,7 @@ class AddressEdit extends GetView<AddressEditControllerImp> {
                     text: "Edit",
                     onPressed: () {
                       FocusScope.of(context).unfocus();
-                      controller.editData();
+                      controller.editAddress();
                     },
                   ),
                 ],

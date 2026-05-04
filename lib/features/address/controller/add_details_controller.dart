@@ -23,7 +23,7 @@ abstract class AddressAddDetailsController extends GetxController {
 
   // Methods
   void initialData();
-  void addData();
+  void addAddress();
 }
 
 class AddressAddDetailsControllerImp extends AddressAddDetailsController {
@@ -54,7 +54,7 @@ class AddressAddDetailsControllerImp extends AddressAddDetailsController {
   }
 
   @override
-  Future<void> addData() async {
+  Future<void> addAddress() async {
     // التحقق من صحة المدخلات في الواجهة أولاً
     // if (formstate.currentState?.validate() != true) return;
 

@@ -1,9 +1,8 @@
 import 'package:electronics_store/features/home/controller/search_controller.dart';
 import 'package:electronics_store/core/class/state_request.dart';
 import 'package:electronics_store/core/constant/my_pages.dart';
-import 'package:electronics_store/core/function/handing_data_controller.dart';
 import 'package:electronics_store/core/services/my_service.dart';
-import 'package:electronics_store/features/favorite/data/favorite_page_data.dart';
+import 'package:electronics_store/features/favorite/data/favorite_data.dart';
 import 'package:electronics_store/data/model/items_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -11,17 +10,16 @@ import 'package:get/get.dart';
 abstract class FavoritePageController extends SearchControllerImp {
   // Dependencies
   MyService myService = Get.find();
-  FavoritePageData favoriteData = FavoritePageData(Get.find());
+  FavoriteData favoriteData = FavoriteData(Get.find());
 
   // Localization
   String? lang;
 
   // Data Lists
-  List responseData = [];
   List<ItemsModel> items = [];
 
   // Methods
-  void getData();
+  void getFavoriteProducts();
   void removeFavorite(String itemsid);
   void goToFavoriteDetails(String itemsid);
   void goToOrdersPanding();
@@ -32,47 +30,48 @@ class FavoritePageControllerImp extends FavoritePageController {
   void onInit() {
     product = TextEditingController();
     lang = myService.sharedPreferences.getString("lang");
-    getData();
+    getFavoriteProducts();
     super.onInit();
   }
 
   @override
-  void getData() async {
-    items.clear();
+  Future<void> getFavoriteProducts() async {
     stateRequest = StateRequest.loading;
     update();
-    var response = await favoriteData.viewFavorite(
-      myService.sharedPreferences.getString("id")!,
+
+    var response = await favoriteData.viewFavorite();
+
+    response.fold(
+      (failure) {
+        stateRequest = failure;
+        update();
+      },
+      (favoriteItems) {
+        stateRequest = StateRequest.success;
+        items.clear();
+        items.addAll(favoriteItems);
+        update();
+      },
     );
-    stateRequest = handlingData(response);
-    if (stateRequest != StateRequest.success) {
-      update();
-      return;
-    }
-    if (response['status'] != "success") {
-      stateRequest = StateRequest.failure;
-      update();
-      return;
-    }
-    responseData = response['data'];
-    items.addAll(responseData.map((e) => ItemsModel.fromJson(e['item'])));
-    update();
   }
 
   @override
-  void goToFavoriteDetails(String itemsid) {
-    Get.toNamed(MyPages.itemsDetails, arguments: {"itemsmodel": itemsid});
-  }
-
-  @override
-  void removeFavorite(itemsid) {
-    favoriteData.removeFavorite(
-      myService.sharedPreferences.getString("id")!,
-      itemsid.toString(),
-    );
+  void removeFavorite(String itemsid) async {
+    // 1. حذف محلي سريع لتحسين تجربة المستخدم (Optimistic UI)
     items.removeWhere((element) => element.itemsId.toString() == itemsid);
-    Get.rawSnackbar(title: "تنبيه", message: "تم حذف المنتج من المفضلة");
     update();
+    Get.rawSnackbar(title: "تنبيه", message: "تم حذف المنتج من المفضلة");
+
+    // 2. إرسال الطلب للسيرفر
+    var response = await favoriteData.removeFavorite(int.parse(itemsid));
+
+    // 3. في حالة الفشل إعادة جلب البيانات
+    response.fold((failure) => getFavoriteProducts(), (success) => null);
+  }
+
+  @override
+  void goToFavoriteDetails(itemsid) {
+    Get.toNamed(MyPages.itemsDetails, arguments: {"itemsid": itemsid});
   }
 
   @override

@@ -60,7 +60,7 @@ class AddressAddDetails extends GetView<AddressAddDetailsControllerImp> {
                     text: "Add",
                     onPressed: () {
                       FocusScope.of(context).unfocus();
-                      controller.addData();
+                      controller.addAddress();
                     },
                   ),
                 ],

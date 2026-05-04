@@ -56,8 +56,8 @@ class ItemsDetails extends GetView<ItemsDetailsControllerImp> {
                   ),
                   CustomTitleDecColor(
                     title: translateDatabase(
-                      controller.itemsModel.itemsName,
-                      controller.itemsModel.itemsNameAr,
+                      controller.itemsModel.itemsName!,
+                      controller.itemsModel.itemsNameAr!,
                     ),
                     dec:
                         "${controller.itemsModel.itemsDesc} ${controller.itemsModel.itemsDesc} ${controller.itemsModel.itemsDesc} ${controller.itemsModel.itemsDesc} ${controller.itemsModel.itemsDesc} ",

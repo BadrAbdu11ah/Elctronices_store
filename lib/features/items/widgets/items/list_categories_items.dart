@@ -64,8 +64,8 @@ class CategoriesCard extends GetView<ItemsControllerImp> {
                     : null,
                 child: Text(
                   translateDatabase(
-                    categoriesModel.categoriesName,
-                    categoriesModel.categoriesNameAr,
+                    categoriesModel.categoriesName!,
+                    categoriesModel.categoriesNameAr!,
                   ),
                   style: TextStyle(fontSize: 20),
                 ),

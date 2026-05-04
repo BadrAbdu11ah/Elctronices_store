@@ -53,7 +53,10 @@ class CustomCardFavorite extends GetView<FavoritePageControllerImp> {
               ),
               SizedBox(height: 10),
               Text(
-                translateDatabase(itemsModel.itemsName, itemsModel.itemsNameAr),
+                translateDatabase(
+                  itemsModel.itemsName!,
+                  itemsModel.itemsNameAr!,
+                ),
                 style: TextStyle(
                   fontSize: controller.lang == "ar" ? 15 : 16,
                   color: MyColor.titleColor,

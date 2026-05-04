@@ -19,14 +19,14 @@ class Cart extends GetView<CartPageControllerImp> {
         builder: (controller) {
           return CustomBottomCart(
             price: "${controller.originalPrice} \$",
-            discount: controller.price != 0.0
+            discount: controller.subtotalPrice != 0.0
                 ? "${controller.discount}%"
                 : "${0}",
-            shipping: controller.price != 0.0
+            shipping: controller.subtotalPrice != 0.0
                 ? "${controller.shipping} \$"
                 : "${0.0} \$",
-            totalPrice: controller.price != 0.0
-                ? "${controller.totalPrice} \$"
+            totalPrice: controller.subtotalPrice != 0.0
+                ? "${controller.totalAppPrice} \$"
                 : "${0.0} \$",
             couponController: controller.coupon,
             onCoupon: () {
@@ -65,7 +65,7 @@ class Cart extends GetView<CartPageControllerImp> {
                             ),
                             price: controller.totalItemPrice[index],
                             onAdd: () {
-                              controller.addCount(
+                              controller.addCart(
                                 index,
                                 controller.items[index].itemsModel!.itemsId
                                     .toString(),
@@ -73,7 +73,7 @@ class Cart extends GetView<CartPageControllerImp> {
                             },
                             count: controller.countItem[index],
                             onRemove: () {
-                              controller.removeCount(
+                              controller.removeCart(
                                 index,
                                 controller.items[index].itemsModel!.itemsId
                                     .toString(),

@@ -45,11 +45,8 @@ class Items extends GetView<ItemsControllerImp> {
                           listDataModel: controller.listSearchData,
                         )
                       : GridView.builder(
-                          // يجعل الـ الشبكة يأخذ حجمه حسب المحتوى وليس الشاشة كاملة
                           shrinkWrap: true,
-                          // يمنع التمرير لأن التمرير يكون من الودجت الأب
                           physics: NeverScrollableScrollPhysics(),
-                          // يحدد طريقة توزيع العناصر داخل الشبكة
                           gridDelegate:
                               SliverGridDelegateWithFixedCrossAxisCount(
                                 // عدد الأعمدة في الصف الواحد
@@ -59,12 +56,7 @@ class Items extends GetView<ItemsControllerImp> {
                               ),
                           itemCount: controller.items.length,
                           itemBuilder: (BuildContext context, int i) {
-                            controller.favorite.isFavorite[controller
-                                    .items[i]['items_id']] =
-                                controller.items[i]['favorite'];
-                            return CustomCardItems(
-                              ItemsModel.fromJson(controller.items[i]),
-                            );
+                            return CustomCardItems(controller.items[i]);
                           },
                         ),
                 ),

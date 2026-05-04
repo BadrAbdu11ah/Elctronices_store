@@ -28,7 +28,7 @@ abstract class AddressEditController extends GetxController {
 
   // Methods
   void initialData();
-  void editData();
+  void editAddress();
 }
 
 class AddressEditControllerImp extends AddressEditController {
@@ -51,7 +51,7 @@ class AddressEditControllerImp extends AddressEditController {
   }
 
   @override
-  Future<void> editData() async {
+  Future<void> editAddress() async {
     // if (formstate.currentState?.validate() != true) return;
 
     stateRequest = StateRequest.loading;

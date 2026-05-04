@@ -1,15 +1,14 @@
 import 'package:electronics_store/core/class/state_request.dart';
 import 'package:electronics_store/core/constant/my_pages.dart';
-import 'package:electronics_store/core/function/handing_data_controller.dart';
 import 'package:electronics_store/core/services/my_service.dart';
-import 'package:electronics_store/features/orders/data/orders_pending_data.dart';
+import 'package:electronics_store/features/orders/data/orders_data.dart';
 import 'package:electronics_store/data/static/my_text.dart';
 import 'package:electronics_store/data/model/orders_model.dart';
 import 'package:get/get.dart';
 
 abstract class OrdersPendingController extends GetxController {
   // Dependencies
-  OrdersPendingData ordersPendingData = OrdersPendingData(Get.find());
+  OrdersData ordersData = OrdersData(Get.find());
   MyService myService = Get.find();
 
   // State Management
@@ -40,11 +39,12 @@ abstract class OrdersPendingController extends GetxController {
   void goToOrdersDetails(OrdersModel ordersModel);
 }
 
+// ربط طبقة البيانات بالمتحكم
 class OrdersPendingControllerImp extends OrdersPendingController {
   @override
   void onInit() {
-    super.onInit();
     getOrders();
+    super.onInit();
   }
 
   @override
@@ -52,24 +52,26 @@ class OrdersPendingControllerImp extends OrdersPendingController {
     ordersModel.clear();
     stateRequest = StateRequest.loading;
     update();
-    var response = await ordersPendingData.getData(
-      myService.sharedPreferences.getString("id")!,
+
+    var response = await ordersData.getPendingOrders();
+
+    response.fold(
+      (failure) {
+        stateRequest = StateRequest.failure;
+        update();
+      },
+      (orders) {
+        ordersModel = orders;
+        stateRequest = StateRequest.success;
+        update();
+      },
     );
-    stateRequest = handlingData(response);
-    if (stateRequest != StateRequest.success) {
-      update();
-      return;
-    }
-    if (response['status'] != "success") {
-      stateRequest = StateRequest.failure;
-      update();
-      return;
-    }
+  }
 
-    List data = response['data'];
-    ordersModel.addAll(data.map((e) => OrdersModel.fromJson(e)));
-
-    update();
+  // دالة مساعدة لعرض السعر بالريال السعودي والدولار معاً
+  String formatPrice(double price) {
+    double sarPrice = price * 3.75;
+    return "$price \$ (${sarPrice.toStringAsFixed(2)} ر.س)";
   }
 
   @override

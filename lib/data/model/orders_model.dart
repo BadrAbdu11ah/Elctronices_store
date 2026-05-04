@@ -5,9 +5,9 @@ class OrdersModel {
   final int? ordersUsersID;
   final int? ordersAddressesID;
   final int? ordersType;
-  final double? ordersPriceDelivery; // تم التغيير لـ double
-  final double? ordersPrice; // تم التغيير لـ double
-  final double? ordersTotalPrice; // تم التغيير لـ double
+  final double? ordersPriceDelivery;
+  final double? ordersPrice;
+  final double? ordersTotalPrice;
   final int? ordersCouponID;
   final int? ordersPaymentMethod;
   final int? ordersStatus;
@@ -39,7 +39,6 @@ class OrdersModel {
       ordersUsersID: json['orders_usersID'],
       ordersAddressesID: json['orders_addressesID'],
       ordersType: json['orders_type'],
-      // حماية الأسعار باستخدام .toDouble()
       ordersPriceDelivery: json['orders_price_delivery']?.toDouble(),
       ordersPrice: json['orders_price']?.toDouble(),
       ordersTotalPrice: json['orders_total_price']?.toDouble(),

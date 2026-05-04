@@ -7,11 +7,11 @@ class ItemsModel {
   final String? itemsImage;
   final int? itemsCount;
   final int? itemsActive;
-  final double? itemsPrice; // تم التغيير لـ double للأمان المالي
+  final double? itemsPrice;
   final int? itemsDiscount;
   final int? itemsCategoriesID;
   final double? discountedPrice; // السعر بعد الخصم
-  final String? favorite; // الحقل الذي يأتي من الـ Join في قاعدة البيانات
+  final String? favorite;
   final String? createdAt;
   final String? updatedAt;
   final Category? category;
@@ -45,13 +45,11 @@ class ItemsModel {
       itemsImage: json['items_image'],
       itemsCount: json['items_count'],
       itemsActive: json['items_active'],
-      // معالجة السعر والخصم كـ double لتجنب الـ Crash
       itemsPrice: json['items_price']?.toDouble(),
       itemsDiscount: json['items_discount'],
       itemsCategoriesID: json['items_categoriesID'],
       discountedPrice: json['discounted_price']?.toDouble(),
-      favorite: json['favorite']
-          ?.toString(), // قد يأتي كـ int أو String من Laravel
+      favorite: json['favorite']?.toString(),
       createdAt: json['created_at'],
       updatedAt: json['updated_at'],
       category: json['category'] != null
